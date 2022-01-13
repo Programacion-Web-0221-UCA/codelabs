@@ -1,0 +1,1276 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Autenticación</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="Google Analytics ID"
+                  id="ProgramacionWeb-codelab-141121"
+                  title="Autenticación"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="¡Bienvenidos/as!" duration="5">
+        <p>En este curso aprenderás como manejar rutas dinámicas y como comunicar esas rutas con un mismo archivo a traves de los contextos globales que nos provee <strong>React</strong></p>
+<h2 is-upgraded>Lo que estaremos realizando</h2>
+<p>Nuestro objetivo es realizar un servicio de autenticación, es decir, un logueo que permita al usuario ver diferentes paginas dependiendo de su tipo de sesión.</p>
+<ul>
+<li>Comenzaremos creando cada un componente de login que nos ayudará posteriormente a renderizar otro componente o no dependiendo de la respuesta de nuestra API.</li>
+<li>Crearemos los servicios necesarios consumir una API.</li>
+<li>Se manejarán rutas dinámicas para redirigir a los usuarios a diferentes lugares de nuestra aplicación.</li>
+<li>Uso de contexto para comunicar un componente con variables especificas sin la necesidad de propiedad extras.</li>
+</ul>
+<p class="image-container"><img alt="Admin page" title="admin login" src="img\\23f5db284913b8bd.gif"></p>
+<p class="image-container"><img alt="User page" title="user login" src="img\\184ff75d6736f1c.gif"></p>
+<h2 is-upgraded>¿Qué aprenderás?</h2>
+<p>✅ Concepto de una <strong>API</strong>.</p>
+<p>✅ Consumo de servicios de una <strong>API</strong>.</p>
+<p>✅ Uso de <strong>React hooks</strong>.</p>
+<p>✅ Estilos con tailwind.</p>
+<p>✅ Contexto globales.</p>
+<p>✅ Enrutamiento.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Configuración del entorno" duration="10">
+        <h2 is-upgraded>IDE</h2>
+<p>El editor de texto a trabajar será Visual Studio Code, si no tienes instalado dicho editor lo puedes descargar desde el siguiente <a href="https://code.visualstudio.com/" target="_blank">enlace</a>.</p>
+<h2 is-upgraded>Clonar el repositorio base</h2>
+<p>Asumimos que tienes instalado <a href="https://git-scm.com/" target="_blank">git</a>, clona el repositorio <a href="https://github.com/Programacion-Web-0221-UCA/L04-REACTLOGIN" target="_blank">base</a> de la siguiente manera en tu lugar de preferencia:</p>
+<pre>git clone https://github.com/Programacion-Web-0221-UCA/L04-REACTLOGIN.git
+</pre>
+<p>Después de clonar el repositorio accedemos a él mediante el comando:</p>
+<pre>cd L04-REACTLOGIN
+</pre>
+<h2 is-upgraded>Archivos</h2>
+<p>En el repositorio encontrarás la siguiente estructura propuesta.</p>
+<pre>my-app
+├── README.md
+├── node_modules
+├── package.json
+├── .gitignore
+├── tailwind.config.js
+├── craco.config.js
+├── public
+├── ├── favicon.ico
+├── ├── index.html
+├── └── manifest.json
+└── src
+    ├── App.css
+    ├── App.js
+    ├── App.test.js
+    ├── index.css
+    ├── index.js
+    ├── logo.svg
+    ├── serviceWorker.js
+    └── setupTests.js
+</pre>
+<p>Archivos a destacar sobre la estructura</p>
+<p><strong>Assets</strong> Carpeta donde se alojan todo tipo de recursos visuales como imágenes, gif, etc.</p>
+<h2 is-upgraded>Instalación de dependencias</h2>
+<p>Al ser un proyecto con <strong>React</strong>, es necesario instalar todas las dependencias necesarias para que nuestro programa compile. Para ello, realizar</p>
+<pre>npm i
+</pre>
+<aside class="warning"><p>  NOTA: npm i es una manera abreviada de npm install </p>
+</aside>
+<h2 is-upgraded>Iniciar nuestra aplicación</h2>
+<p>Para iniciar nuestra aplicación ejecutaremos el siguiente comando en la terminal</p>
+<pre>npm start
+</pre>
+<aside class="warning"><p>  NOTA: npm start provee un hot reload, lo que implica que podemos ejecutar cambios en nuestra aplicación mientras se encuentra en ejecución y visualizar dichos cambios. </p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Contextos en React" duration="15">
+        <h2 is-upgraded>Introducción</h2>
+<p>Como se ha mencionado, en muchas ocasiones es necesario comunicar a diferentes componentes entre sí, por ejemplo, una ruta que tenga como prerrequisito una respuesta de otro componente. Pero en muchas ocasiones no resulta demasiado eficiente pasar un atributo por muchos componentes ya que, si este se actualiza, se volverá a renderizar cada uno de los componentes por los cuales este ha viajado. Para ello, se brindan diferentes soluciones, ente una ellas, el uso de contextos.</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Introducción a los contextos en React.</li>
+</ul>
+<p class="image-container"><img alt="Nivels" title="nivels" src="img\\f15361401338d219.png"></p>
+<aside class="warning"><p> NOTA: En <strong>React</strong> los datos se pasan de arriba hacia abajo (Padres a hijos) </p>
+</aside>
+<aside class="warning"><p> NOTA: Un contexto puede ser visto como una variable global, la cual es accesible en cualquier parte de nuestra aplicación. </p>
+</aside>
+<h2 is-upgraded>¿Qué es un Contexto?</h2>
+<p>La forma mostrada en la imagen resulta muy incómoda e ineficiente para ciertos tipos de datos que son necesarios en muchos componentes dentro de nuestra aplicación. El contexto proporciona una forma de compartir un <strong>dato</strong> sin la necesidad que este sea pasado como una propiedad.</p>
+<p class="image-container"><img alt="Context" title="Context on React" src="img\\2930322a51c2192b.png"></p>
+<aside class="warning"><p> NOTA: Al poseer un contexto, cualquier componente de nuestra aplicación puede acceder a el sin la necesidad de que este haya sido heredado (Se pase como props). </p>
+</aside>
+<aside class="warning"><p> NOTA: <strong>React</strong> es capaz de manejar diferentes contextos en nuestra aplicación, lo cual indica que se puede tener diferentes estados globales. </p>
+</aside>
+<h2 is-upgraded>Proveedores y consumidores</h2>
+<p>Los contextos suelen dividirse en proveedores y consumidores. Lo cuales nos ayudan a indicar quienes pueden consumir nuestro contexto y la forma de consumir dicho contexto.</p>
+<h3 is-upgraded>Proveedores</h3>
+<p>Un proveedor puede ser visto como aquello que nos <strong>provee</strong> del objeto que desea ser compartido y es importante decirle quienes son capaces de utilizar nuestro objeto compartido</p>
+<h3 is-upgraded>Consumidores</h3>
+<p>Los consumidores en un contexto, es la forma en la que nosotros obtenemos el objeto que fue proveído por nuestro <strong>proveedor</strong></p>
+<p class="image-container"><img alt="provided" title="providers" src="img\\e1ace78104c694dc.png"></p>
+<aside class="warning"><p> NOTA: Este es un ejemplo ilustrativo de como funcionan los proveedores y consumidores, puede ser diferente. </p>
+</aside>
+<aside class="warning"><p> NOTA: Con nuestro <strong>Provider</strong> estamos seguros de quienes pueden usar nuestro objeto y quienes no. </p>
+</aside>
+<h2 is-upgraded>¿Cuando usar el contexto?</h2>
+<p>Es importante mencionar que no se debe usar el contexto para cualquier variable solo porque esta desea ser pasada a un hijo como propiedad. Los contextos se deben ocupar únicamente en aquellos datos que puedan considerarse <strong>globales</strong>. Por ejemplo, el usuario actual, el tema de nuestra aplicación o incluso el idioma preferido. Si quieres profundizar mas en el tema, puedes visitar la documentación que provee <strong>React</strong> en el siguiente <a href="https://es.reactjs.org/docs/context.html" target="_blank">enlace</a>.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 1 - React Context" duration="10">
+        <h2 is-upgraded>Utilizando Context</h2>
+<p><strong>Context</strong> es una manera sencilla que provee React para poder tener acceso a algunos datos de manera <strong>&#34;global&#34;</strong>, sin importar el nivel del componente desde el cual deseemos acceder. Una de sus mayores ventajas es que evita que se pasen estos datos por <code>props</code> de varios componentes.</p>
+<p>En nuestro caso haremos uso de Context para poder acceder al usuario que se está autenticado actualmente desde cualquier componente.</p>
+<p>Dentro de <code>src</code> crearemos una carpeta llamada <code>contexts</code> y a su vez, dentro de ella estará un archivo con el nombre de <code>UserContext.js</code>.</p>
+<p>Ahora comencemos creando nuestro objeto Context, que tendrá por nombre <code>UserContext</code>:</p>
+<pre><code>const UserContext = React.createContext();
+</code></pre>
+<p>Luego crearemos un componente <code>Provider</code>, que como su nombre lo indica, va a proveer a toda la aplicación de las variables, funciones o cualquier tipo de dato global que deseemos incluir.</p>
+<pre><code language="language-javascript" class="language-javascript">export const UserProvider = (props) =&gt; {
+  const value = useMemo(
+    () =&gt; ({
+      // future logic
+    }),
+    []
+  );
+
+  return &lt;UserContext.Provider value={value} {...props} /&gt;;
+};
+</code></pre>
+<p>Este componente recibe <code>props</code> y retorna un componente <code>Provider</code> para el contexto que creamos anteriormente. Este a su vez cuenta con un prop llamado <code>value</code>, donde se incluirá todo lo que deseemos acceder en cualquier lugar de la aplicación.</p>
+<p>En las secciones siguientes se conocerá cómo asignar estos valores, pero por el momento basta con saber que el método <code>useMemo</code> nos ayudará a almacenar valores en un objeto. Si nos fijamos, al igual que <code>useEffect</code>, cuenta con un segundo parámetro (dependencia), que indica cuándo se va a ejecutar.</p>
+<p>Ya teniendo listo nuestro proveedor del contexto, es necesario hacer algunos cambios en el archivo <code>index.js</code>:</p>
+<pre><code language="language-javascript" class="language-javascript">ReactDOM.render(
+  &lt;React.StrictMode&gt;
+    &lt;UserProvider&gt;
+      &lt;App /&gt;
+    &lt;/UserProvider&gt;
+  &lt;/React.StrictMode&gt;,
+  document.getElementById(&#34;root&#34;)
+);
+</code></pre>
+<p>Lo que se hizo fue &#34;rodear&#34; el componente <code>App</code> con <code>UserProvider</code> para que, de esta manera podamos acceder a todos los recursos del contexto, tanto desde <code>App</code> como desde cualquier otro componente que se encuentre dentro.</p>
+<p>✅ Con esto ya tenemos configurado nuestro Context.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 2 - Implementación del contexto" duration="0">
+        <h2 is-upgraded>Introducción</h2>
+<p>Ya una vez obtenido nuestro proveedor , es necesario crear el contexto para que nuestros componentes puedan hacer uso de el.</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Uso del contexto.</li>
+<li>Uso del hook <strong>useContext</strong></li>
+</ul>
+<h2 is-upgraded>Hooks: useContext</h2>
+<p>Como vimos anteriormente, creamos nuestro proveedor, el cual nos permite acceder a un valor desde cualquier parte de nuestra aplicación, pero un proveedor nos da la posibilidad de ocuparlo mas no nos brinda la manera de realizarlo. <strong>useContext</strong> es ese &#34;consumidor&#34; de todos nuestros contextos.</p>
+<h3 is-upgraded>Funcionamiento</h3>
+<p>useContext es una función de <strong>React</strong> que recibe el contexto al cual queremos acceder. Si podemos acceder a dicho contexto, podremos obtener el valor alojado en dicho contexto, en caso contrario, obtendremos un valor nulo.</p>
+<h2 is-upgraded>Obteniendo el contexto de nuestra aplicación</h2>
+<p>En nuestro archivo <strong>UserContext</strong> crearemos una función <strong>useUserContext</strong> que se encargue de ayudarnos a obtener el valor guardado por nuestro <strong>Provider</strong>.</p>
+<pre><code language="language-javascript" class="language-javascript">export const useUserContext = () =&gt; {
+  const context = React.useContext(UserContext);
+
+  if (!context) {
+    throw new Error(&#34;useUserContext() must be inside of UserProvider&#34;);
+  }
+
+  return context;
+};
+</code></pre>
+<p>Explicando el código mostrado</p>
+<p><strong>Paso 1</strong>: Declaramos una función <strong>useUserContext</strong>.</p>
+<p><strong>Paso 2</strong>: Con la ayuda de <strong>useContext</strong> obtenemos el contexto de nuestro usuario, el cual está en UserContext.</p>
+<p><strong>Paso 3</strong>: Si no tenemos un valor en nuestro contexto, lanzamos un error, en caso contrario, retornamos nuestro contexto.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 2 - Creación de servicios" duration="15">
+        <h2 is-upgraded>¿Qué es un servicio?</h2>
+<p>Un servicio es un conjunto de protocolos que tienen el objetivo de hacer posible el intercambio de datos entre aplicaciones por medio de la administración de solicitudes. En este caso, necesitamos comunicarnos con la API llamada <a href="https://posts-pw2021.herokuapp.com/" target="_blank">POSTS</a>, de la cual podemos obtener todos los usuarios para permitir o no su atentificación, dependiendo de sus credenciales.</p>
+<h2 is-upgraded>Creación de archivo</h2>
+<p>Para comenzar, en nuestra carpeta principal <code>src</code>, crearemos una carpeta llamada <code>services</code> y dentro de ella agregaremos un nuevo archivo llamado <code>user.services.js</code>. Es ahí donde tendremos todo lo necesario para obtener la información de la API.</p>
+<h2 is-upgraded>Variables globales</h2>
+<p>Como hemos aprendido en el <a href="https://hencor2019.github.io/nvm-guide/ProgramacionWeb-codelab-111021/index.html#4" target="_blank">Codelab anterior</a>, es necesario contar con una URL base perteneciente a la API, ya que es indispensable para realizar las demás peticiones.</p>
+<pre><code language="language-javascript" class="language-javascript">const BASE_URL = &#34;https://posts-pw2021.herokuapp.com/api/v1&#34;;
+</code></pre>
+<p>También declararemos un objeto vacío llamado <code>services</code>, donde se almacenarán las funciones que utilizaremos.</p>
+<pre><code language="language-javascript" class="language-javascript">const services = {};
+</code></pre>
+<h2 is-upgraded>Inicio de sesión</h2>
+<p>Antes de realizar la función como tal, es necesario hacer un breve repaso sobre algunos métodos para realizar peticiones HTTP, estos son los que permiten la comunicación entre clientes y servidores.</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Método HTTP</p>
+</td><td colspan="1" rowspan="1"><p>¿Qué hace?</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>GET</p>
+</td><td colspan="1" rowspan="1"><p><strong>Obtiene</strong> un recurso</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>POST</p>
+</td><td colspan="1" rowspan="1"><p><strong>Envía datos</strong> para crear o actualizar un recurso</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>PUT</p>
+</td><td colspan="1" rowspan="1"><p><strong>Envía datos</strong> para crear o actualizar un recurso y siempre produce el mismo resultado</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>DELETE</p>
+</td><td colspan="1" rowspan="1"><p><strong>Elimina</strong> los datos especificados</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>PATCH</p>
+</td><td colspan="1" rowspan="1"><p><strong>Modifica parcialmente</strong> un recurso</p>
+</td></tr>
+</table>
+<p>Si quieres saber más sobre estos u otros métodos, puedes visitar el siguiente <a href="https://www.w3schools.com/tags/ref_httpmethods.asp" target="_blank">enlace</a>.</p>
+<p>Teniendo claros estos métodos, procederemos a asignar la función <code>login</code> como un atributo de nuestro objeto <code>services</code>:</p>
+<pre><code language="language-javascript" class="language-javascript">services.login = async (username, password) =&gt; {
+  const response = await fetch(`${BASE_URL}/auth/signin`, {
+    method: &#34;POST&#34;,
+    headers: {
+      &#34;Content-type&#34;: &#34;application/json&#34;,
+    },
+    body: JSON.stringify({
+      username: username,
+      password: password,
+    }),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+
+  return {};
+};
+</code></pre>
+<p>Como podemos notar se trata de una función <code>async</code> y cuenta con un <code>fetch</code> a la URL que corresponde al inicio de sesión (esto se encuentra en la documentación de <a href="https://posts-pw2021.herokuapp.com/" target="_blank">POSTS API</a>), en la sección <strong>&#34;Auth&#34;</strong>.</p>
+<h3 is-upgraded>Init object</h3>
+<p>Dentro de <code>fetch</code> también se ha colocado un objeto como segundo parámetro que permite controlar algunas configuraciones a aplicarle a la petición, tales como:</p>
+<ul>
+<li><code>method</code> - En este caso se trata de un método POST porque vamos a enviar el nombre de usuario y la contraseña ingresadas.</li>
+<li><code>headers</code> - Son utilizados para enviar información adicional sobre los datos. Puedes profundizar en este <a href="https://developer.mozilla.org/es/docs/Web/HTTP/Headers" target="_blank">enlace</a></li>
+<li><code>body</code> - El cuerpo de la petición que contiene los datos enviados.</li>
+</ul>
+<aside class="special"><p> El método JSON.stringify() convierte un objeto de JavaScript en una cadena de texto en formato JSON. </p>
+</aside>
+<p>Finalmente, comprobamos si la respuesta obtenida es correcta mediante la validación <code>if (response.ok)</code> y retornamos los datos esperados si todo sale bien, o un objeto vacío en caso contrario.</p>
+<h2 is-upgraded>Validación de token</h2>
+<p>Un <strong>token</strong> es una cadena de caracteres utilizada para identificar a un usuario, aplicación, página, entre otros. En este caso los utilizaremos para poder saber qué usuario intenta iniciar sesión.</p>
+<p>En el mismo archivo <code>user.services.js</code> crearemos otra función como atributo de <code>services</code>, de la siguiente manera:</p>
+<pre><code language="language-javascript" class="language-javascript">services.verifyToken = async (token) =&gt; {
+  const response = await fetch(`${BASE_URL}/auth/whoami`, {
+    method: &#34;GET&#34;,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+
+  return {};
+};
+</code></pre>
+<p>Como podemos notar, esta función es muy parecida a la anterior. Las únicas diferencias más notorias son que su <code>method</code> ahora es GET, es decir, que queremos obtener los datos del usuario con ese token y ahora tenemos otro tipo de <code>headers</code>.</p>
+<p>Como paso final, no olvides exportar el objeto <code>services</code>:</p>
+<pre><code language="language-javascript" class="language-javascript">export default services;
+</code></pre>
+<p>✅ Ya tenemos nuestros servicios que se encargarán de la comunicación con la API.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 4 - Funciones de un usuario" duration="0">
+        <p>Como se ha mencionado, nuestro <strong>Provider</strong> nos brinda un objeto pero en muchas ocasiones queremos que nuestro contexto cambie, ya sea porque se actualizo un dato y es necesario informar o porque internamente paso algo y el contexto debe cambiar, por ello, podemos agregar métodos y variables que nos ayuden a realizar esas acciones.</p>
+<aside class="warning"><p> NOTA: Es recomendable hacer los metodos que modifican en el provider en el mismo Provider. En nuestro caso, en <strong>UserProvider</strong></p>
+</aside>
+<aside class="warning"><p> NOTA: Un <strong>Provider</strong> puede ser visto también como un bául, el cual cuenta con todo lo necesario para trabajar sobre el sin la necesidad de crear archivos externos. </p>
+</aside>
+<h2 is-upgraded>Manejo de tokens</h2>
+<p>Una forma segura de consumir una API es mediante <strong>tokens</strong>, los cuales nos ayudan a autenticar un usuario para posteriores peticiones. La API a utilizar nos brinda de un token para los inicios de sesión, por lo cual es necesario guardar dicho token. Para ello haremos uso de funciones que se encarguen de actualizar nuestros tokens de acceso.</p>
+<p>Declaramos un estado para nuestro token en nuestro <strong>UserProvider</strong>, el cual se encargará de brindarnos el token y actualizar en dado caso sea necesario.</p>
+<pre><code language="language-javascript" class="language-javascript">const [token, setToken] = useState(undefined);
+</code></pre>
+<h3 is-upgraded>Traer el token actual</h3>
+<p>Declaramos el metodo <strong>getToken</strong>, el cual nos ayudará a traer nuestro token de nuestro localStorage.</p>
+<pre><code language="language-javascript" class="language-javascript">const getToken = () =&gt; localStorage.getItem(TOKEN_KEY);
+</code></pre>
+<h3 is-upgraded>Actualizar nuestro token</h3>
+<p>Para actualizar nuestro token haremos uso de una función llamada <strong>setTokenAll</strong>. Escribimos lo siguiente en nuestro <strong>UserProvider</strong></p>
+<pre><code language="language-javascript" class="language-javascript">const setTokenAll = (token) =&gt; {
+  localStorage.setItem(TOKEN_KEY, token);
+  setToken(token);
+};
+</code></pre>
+<aside class="warning"><p> NOTA: TOKEN_KEY es el nombre con el cual guardamos nuestro token </p>
+</aside>
+<aside class="warning"><p> NOTA: En nuestro caso usamos el localStorage, pero también se puede hacer uso de cookies y sessionStorage </p>
+</aside>
+<h3 is-upgraded>Verificar la validez de nuestro token</h3>
+<p>Al tener un token es necesario validarlo. Crearemos un efecto (useEffect) ya que necesitaremos verificar un usuario cada vez que este se intente loguear y con la ayuda de los servicios creados, crearemos internamente una función llamada <strong>verifyTokenAsync</strong></p>
+<pre><code language="language-javascript" class="language-javascript">useEffect(() =&gt; {
+  const verifyTokenAsync = async () =&gt; {
+    const lsToken = getToken();
+
+    if (lsToken) {
+      const { username, role } = await userService.verifyToken(lsToken);
+      if (username &amp;&amp; role) {
+        setUser({ username, role });
+        setTokenAll(lsToken);
+      }
+    }
+  };
+
+  verifyTokenAsync();
+}, [token]);
+</code></pre>
+<p>Explicando el código mostrado</p>
+<p><strong>Paso 1</strong>: Declaramos nuestro efecto y una función para verificar nuestro token.</p>
+<p><strong>Paso 2</strong>: Con el método <strong>getToken</strong> obtenemos el token actual de nuestro localStorage. Si no poseemos un token, no es necesario hacer ninguna acción.</p>
+<p><strong>Paso 3</strong>: Si tenemos un token verificamos su validez ya que puede ser un token no valido o un token vencido, para lo cual hacemos uso del servicio <strong>verifyToken</strong> de nuestros <strong>userService</strong>. Del cual podremos obtener el usuario y el rol del usuario en nuestra aplicación.</p>
+<p><strong>Paso 4</strong>: Si obtenemos un <strong>username</strong> y un <strong>rol</strong>, es necesario actualizar el estado del usuario previamente definido.</p>
+<aside class="warning"><p> NOTA: Queremos que nuestro efecto se ejecute cada vez que nuestro token cambie, por eso mismo nuestro token será una dependencia de nuestro useEffect. </p>
+</aside>
+<h2 is-upgraded>Función de login</h2>
+<p>Crearemos una función de logueo que nos ayude a consumir el servicio creado anteriormente para ingresar con un usuario, para ello, declararemos una función llamada login que se encargará de dicho proceso.</p>
+<pre><code language="language-javascript" class="language-javascript">const login = useCallback((username, password) =&gt; {
+  const loginAsync = async () =&gt; {
+    let status = false;
+    try {
+      const { token: tokenRes } = await userService.login(username, password);
+
+      if (tokenRes) {
+        setTokenAll(tokenRes);
+        status = true;
+      }
+    } catch (error) {
+      console.error(error);
+      console.error(&#34;Error in login&#34;);
+    } finally {
+      return status;
+    }
+  };
+
+  return loginAsync();
+}, []);
+</code></pre>
+<p>Explicando el código mostrado anteriormente</p>
+<p><strong>Paso 1</strong>: Hacemos uso de useCallback para declarar una función controlada que reciba un <strong>username</strong> y una <strong>password</strong>.</p>
+<p><strong>Paso 2</strong>: Declaramos una función asincrona que nos indique el status de nuestro servicio de logueo.</p>
+<p><strong>Paso 3</strong>: Hacemos uso de el método <strong>login</strong> de nuestros <strong>userService</strong> y le indicamos los métodos necesarios. Si nuestras credenciales son correctas, se nos devolverá el token.</p>
+<aside class="warning"><p> NOTA: useCallback nos ayuda a crear una función que se renderice cuando nosotros le indiquemos. Puedes leer más en <a href="https://reactjs.org/docs/hooks-reference.html" target="_blank">useCallback</a></p>
+</aside>
+<h2 is-upgraded>Funcion de logout</h2>
+<p>Si el usuario desea salirse de nuestra aplicación, es necesario limpiar nuestro estado global. Declaramos una función llamada logout que se encargue de limpiar tanto nuestro estado de user como nuestro estado de token.</p>
+<pre><code language="language-javascript" class="language-javascript">const logout = useCallback(() =&gt; {
+  setUser(undefined);
+  setTokenAll(undefined);
+}, []);
+</code></pre>
+<aside class="warning"><p> NOTA: al validar los valores undefined con las funciones, es valido colocar dichos datos para &#34;limpiar&#34; nuestro contexto. </p>
+</aside>
+<h2 is-upgraded>Resultado final de nuestro contexto</h2>
+<p>Si se han realizado todos los métodos y cambios sobre nuestro archivo <strong>UserContext</strong>, debemos tener el siguiente resultado.</p>
+<pre><code language="language-javascript" class="language-javascript">import React, { useState, useEffect, useMemo, useCallback } from &#34;react&#34;;
+
+import userService from &#34;./../services/user.services&#34;;
+
+const UserContext = React.createContext();
+const TOKEN_KEY = &#34;token&#34;;
+
+export const UserProvider = (props) =&gt; {
+  const [token, setToken] = useState(undefined);
+  const [user, setUser] = useState(undefined);
+
+  useEffect(() =&gt; {
+    const verifyTokenAsync = async () =&gt; {
+      const lsToken = getToken();
+
+      if (lsToken) {
+        const { username, role } = await userService.verifyToken(lsToken);
+        if (username &amp;&amp; role) {
+          setUser({ username, role });
+          setTokenAll(lsToken);
+        }
+      }
+    };
+
+    verifyTokenAsync();
+  }, [token]);
+
+  const setTokenAll = (token) =&gt; {
+    localStorage.setItem(TOKEN_KEY, token);
+    setToken(token);
+  };
+
+  const login = useCallback((username, password) =&gt; {
+    const loginAsync = async () =&gt; {
+      let status = false;
+      try {
+        const { token: tokenRes } = await userService.login(username, password);
+
+        if (tokenRes) {
+          setTokenAll(tokenRes);
+          status = true;
+        }
+      } catch (error) {
+        console.error(error);
+        console.error(&#34;Error in login&#34;);
+      } finally {
+        return status;
+      }
+    };
+
+    return loginAsync();
+  }, []);
+
+  const logout = useCallback(() =&gt; {
+    setUser(undefined);
+    setTokenAll(undefined);
+  }, []);
+
+  const value = useMemo(
+    () =&gt; ({
+      token: token,
+      user: user,
+      login: login,
+      logout: logout,
+    }),
+    [token, user, login, logout]
+  );
+
+  return &lt;UserContext.Provider value={value} {...props} /&gt;;
+};
+
+export const useUserContext = () =&gt; {
+  const context = React.useContext(UserContext);
+
+  if (!context) {
+    throw new Error(&#34;useUserContext() must be inside of UserProvider&#34;);
+  }
+
+  return context;
+};
+
+const getToken = () =&gt; localStorage.getItem(TOKEN_KEY);
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 5 - Login" duration="0">
+        <h2 is-upgraded>Introducción</h2>
+<p>Con la finalidad de entender a profundidad como funcionan los servicios y hooks utilizados anteriormente se realizará una página para poder autentificarse.</p>
+<p>En esta se otorgará el permiso para accesar a diversas páginas como usuario normal o como administrador, ingresando el usuario y la contraseña.</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Establecer una página para poder iniciar sesión</li>
+</ul>
+<h2 is-upgraded>Login.jsx</h2>
+<p>Está página nos permitira iniciar sesión.</p>
+<p class="image-container"><img alt="Login" title="Login" src="img\\25d8ac40ff1b3284.png"></p>
+<p>Al principio es necesario crear una carpeta en la carpeta &#34;src&#34; a la cual llamaremos &#34;pages&#34; y en esta crearemos una carpeta &#34;Login&#34; y por último en esta carpeta se creará un archivo llamado Login.jsx.</p>
+<p>Posteriormente en este archivo se creará un componente llamado &#34;Login&#34; y se exportará.</p>
+<pre><code language="language-javascript" class="language-javascript">const Login = () =&gt; {};
+
+export default Login;
+</code></pre>
+<p>En este componente nosotros retornaremos el siguiente html:</p>
+<pre><code language="language-javascript" class="language-javascript">return (
+  &lt;div className=&#34;flex justify-center items-center min-h-screen bg-gradient-to-r from-green-400 to-blue-500&#34;&gt;
+    &lt;main className=&#34;w-3/4 max-w-3xl bg-blue-100 rounded-md p-8 md:p-10 shadow-md&#34;&gt;
+      &lt;form className=&#34;flex flex-col gap-4 items-center justify-center&#34;&gt;
+        &lt;h2 className=&#34;uppercase text-gray-800 font-monserrat font-black text-4xl mb-4&#34;&gt;
+          Prograweb
+        &lt;/h2&gt;
+        &lt;input
+          className=&#34;font-medium w-full text-gray-700 focus:outline-none focus:ring focus:border-gray-700 p-2 rounded&#34;
+          type=&#34;text&#34;
+          placeholder=&#34;e.g. username&#34;
+        /&gt;
+        &lt;input
+          className=&#34;font-medium w-full text-gray-700 focus:outline-none focus:ring focus:border-gray-700 p-2 rounded&#34;
+          type=&#34;password&#34;
+          placeholder=&#34;e.g password&#34;
+        /&gt;
+        &lt;button className=&#34;mt-6 w-full transition rounded border border-blue-500 duration-300 ease-in-out text-xl text-extrabold uppercase bg-blue-500 hover:bg-blue-700 py-2 px-4 text-gray-100&#34;&gt;
+          Sign In{&#34; &#34;}
+        &lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+);
+</code></pre>
+<aside class="special"><p>     NOTA: Recordando que todas las clases vienen de la documentación de <a href="https://tailwindcss.com/docs" target="_blank">Tailwind CSS</a>. </p>
+</aside>
+<p>Posteriormente es necesario importar useState</p>
+<pre><code language="language-javascript" class="language-javascript">import { useState } from &#34;react&#34;;
+</code></pre>
+<p>Lo anterior con el objetivo de declarar estados para el nombre de usuario, la contraseña y el posible mensaje de error.</p>
+<pre><code language="language-javascript" class="language-javascript">const [username, setUsername] = useState(&#34;&#34;);
+const [password, setPassword] = useState(&#34;&#34;);
+const [error, setError] = useState(false);
+</code></pre>
+<p>Cambiando los estados con la siguiente función:</p>
+<pre><code language="language-javascript" class="language-javascript">const onChange = (e, save) =&gt; {
+  save(e.target.value);
+};
+</code></pre>
+<p>Utilizando la función en el onChange y el estado en el value de los inputs</p>
+<pre><code language="language-javascript" class="language-javascript">&lt;input className=&#34;font-medium w-full text-gray-700 focus:outline-none focus:ring focus:border-gray-700 p-2 rounded&#34;
+  type=&#39;text&#39;
+  value={username}
+  placeholder=&#39;e.g. username&#39;
+  onChange={(e) =&gt; onChange(e, setUsername)}
+/&gt;
+
+&lt;input className=&#34;font-medium w-full text-gray-700 focus:outline-none focus:ring focus:border-gray-700 p-2 rounded&#34;
+  type=&#34;password&#34;
+  placeholder=&#34;e.g password&#34;
+  onChange={(e) =&gt; onChange(e, setPassword)}
+  value={password}
+/&gt;
+</code></pre>
+<p>Pero antes de crear la función de &#34;onSubmitHandler&#34; es necesario tener la función para iniciar sesión y el token del usuario para lo cual es necesario importar el &#34;useContext&#34; que se creó anteriormente.</p>
+<pre><code language="language-javascript" class="language-javascript">import { useUserContext } from &#34;../../contexts/UserContext&#34;;
+</code></pre>
+<p>Y obtener la función y el token.</p>
+<pre><code language="language-javascript" class="language-javascript">const { login, token } = useUserContext();
+</code></pre>
+<p>Obteniendo esto ya podemos crear la función &#34;onSubmitHandler&#34; de la siguiente manera:</p>
+<pre><code language="language-javascript" class="language-javascript">const onSubmitHandler = async (e) =&gt; {
+  e.preventDefault();
+
+  const logged = await login(username, password);
+
+  setError(!logged);
+  setUsername(&#34;&#34;);
+  setPassword(&#34;&#34;);
+};
+</code></pre>
+<p>En la cual &#34;seteamos&#34; el valor el error si es que lo hay y limpiando el valor del usuario y de la contraseña</p>
+<p>mandandola a llamar en el form con el atributo onSubmit</p>
+<pre><code language="language-javascript" class="language-javascript">onSubmit = { onSubmitHandler };
+</code></pre>
+<p>incluyendo lo siguiente en el html si existe un error:</p>
+<pre><code language="language-javascript" class="language-javascript">{
+  error &amp;&amp; (
+    &lt;p className=&#34;w-full rounded p-3 text-center text-white font-roboto bg-red-700 select-none&#34;&gt;
+      Un error ha ocurrido en el inicio de sesión
+    &lt;/p&gt;
+  );
+}
+</code></pre>
+<p>Y por último ya que se actualizo el token realizar un &#34;if&#34; para imprimir en consola que si se pudo &#34;loggear&#34;.</p>
+<pre><code language="language-javascript" class="language-javascript">if (token) {
+  console.log(&#34;Ya se loggea&#34;);
+}
+</code></pre>
+<p>Quedando todo de la siguiente manera:</p>
+<pre><code language="language-javascript" class="language-javascript">import { useState } from &#34;react&#34;;
+import { useUserContext } from &#34;../../contexts/UserContext&#34;;
+
+export default function Login() {
+  const { login, token } = useUserContext();
+
+  const [username, setUsername] = useState(&#34;&#34;);
+  const [password, setPassword] = useState(&#34;&#34;);
+
+  const [error, setError] = useState(false);
+
+  const onChange = (e, save) =&gt; {
+    save(e.target.value);
+  };
+
+  const onSubmitHandler = async (e) =&gt; {
+    e.preventDefault();
+
+    const logged = await login(username, password);
+
+    setError(!logged);
+    setUsername(&#34;&#34;);
+    setPassword(&#34;&#34;);
+  };
+
+  if (token) {
+    console.log(&#34;Ya se loggea&#34;);
+  }
+
+  return (
+    &lt;div className=&#34;flex justify-center items-center min-h-screen bg-gradient-to-r from-green-400 to-blue-500&#34;&gt;
+      &lt;main className=&#34;w-3/4 max-w-3xl bg-blue-100 rounded-md p-8 md:p-10 shadow-md&#34;&gt;
+        &lt;form
+          onSubmit={onSubmitHandler}
+          className=&#34;flex flex-col gap-4 items-center justify-center&#34;
+        &gt;
+          &lt;h2 className=&#34;uppercase text-gray-800 font-monserrat font-black text-4xl mb-4&#34;&gt;
+            Prograweb
+          &lt;/h2&gt;
+
+          {error &amp;&amp; (
+            &lt;p className=&#34;w-full rounded p-3 text-center text-white font-roboto bg-red-700 select-none&#34;&gt;
+              Un error ha ocurrido en el inicio de sesión
+            &lt;/p&gt;
+          )}
+
+          &lt;input
+            className=&#34;font-medium w-full text-gray-700 focus:outline-none focus:ring focus:border-gray-700 p-2 rounded&#34;
+            type=&#34;text&#34;
+            value={username}
+            placeholder=&#34;e.g. username&#34;
+            onChange={(e) =&gt; onChange(e, setUsername)}
+          /&gt;
+
+          &lt;input
+            className=&#34;font-medium w-full text-gray-700 focus:outline-none focus:ring focus:border-gray-700 p-2 rounded&#34;
+            type=&#34;password&#34;
+            placeholder=&#34;e.g password&#34;
+            onChange={(e) =&gt; onChange(e, setPassword)}
+            value={password}
+          /&gt;
+
+          &lt;button className=&#34;mt-6 w-full transition rounded border border-blue-500 duration-300 ease-in-out text-xl text-extrabold uppercase bg-blue-500 hover:bg-blue-700 py-2 px-4 text-gray-100&#34;&gt;
+            Sign In{&#34; &#34;}
+          &lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Rutas dinámicas" duration="5">
+        <h2 is-upgraded>Introducción</h2>
+<p>Como sabemos, React se conoce por ser una <a href="https://developer.mozilla.org/en-US/docs/Glossary/SPA" target="_blank">SPA</a>, lo cual nos niega el uso de más de un archivo HTML. A continuación, se presenta una forma que solucione dicho problema de las rutas dinámicas.</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Conocer el uso de enrutadores.</li>
+<li>Entender como funciona un enrutamiento.</li>
+</ul>
+<h2 is-upgraded>React Router Dom</h2>
+<p>React router dom es una forma de crear rutas dinámicas de una manera sencilla y controlada (Ya que nosotros indicamos que rutas existen en nuestra aplicación).</p>
+<aside class="special"><p> NOTA: React Router Dom nos ayuda a cambiar entre componentes, mas no nos crea archivos HTML extras. Siempre trabajaremos sobre un mismo <strong>index.html</strong></p>
+</aside>
+<h3 is-upgraded>Funcionamiento</h3>
+<p>El funcionamiento del enrutamiento, por lo general es el mismo. Primero necesitamos a alguien que sea nuestro &#34;vigilante&#34;, el cual tiene la función de avisar que nuestra ruta ha cambia. Luego tendremos nuestro Router, el cual se encargará de cambiar dichas rutas por las indicadas. Un resumen de lo que se ha mencionado puede ser:</p>
+<table>
+<tr><td colspan="1" rowspan="1"><p>Enrutamiento</p>
+</td><td colspan="1" rowspan="1"><p>¿Qué hace?</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>BrowserRouter</p>
+</td><td colspan="1" rowspan="1"><p><strong>Escucha</strong> los cambios de nuestra url</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Router</p>
+</td><td colspan="1" rowspan="1"><p><strong>Cambia</strong> A la ruta indicada</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>path</p>
+</td><td colspan="1" rowspan="1"><p><strong>Ayuda</strong> Al Router a renderizar los componentes</p>
+</td></tr>
+</table>
+<p class="image-container"><img alt="Router" title="router" src="img\\2a973daec1caa077.png"></p>
+<aside class="special"><p> NOTA: <strong>Login, About, Home y Search</strong> son los componentes que se renderizarán dependiendo nuestro path. </p>
+</aside>
+<aside class="special"><p> NOTA: <strong>BrowserRouter</strong> escucha los cambios del history, el cual esta incluido en nuestro navegador. </p>
+</aside>
+<h3 is-upgraded>Sintaxis</h3>
+<p>A continuación se muestra el uso del enrutamiento con <a href="https://reactrouter.com/docs/en/v6" target="_blank">React Router DOM</a></p>
+<pre><code language="language-javascript" class="language-javascript">&lt;BrowserRouter&gt;
+  &lt;Routes&gt;
+    &lt;Route path=&#34;/&#34; element={&lt;App /&gt;} /&gt;
+    &lt;Route path=&#34;expenses&#34; element={&lt;Expenses /&gt;} /&gt;
+    &lt;Route path=&#34;invoices&#34; element={&lt;Invoices /&gt;} /&gt;
+  &lt;/Routes&gt;
+&lt;/BrowserRouter&gt;
+</code></pre>
+<p>Se explica el código mostrado</p>
+<p><strong>Paso 1</strong>: Con la ayuda de nuestro <strong>BrowserRouter</strong> declaramamos nuestro &#34;listener&#34; para el cambio de rutas.</p>
+<p><strong>Paso 2</strong>: Al poseer varias rutas, es necesario un &#34;switch&#34; que nos ayude a realizar el cambio de las rutas, eso se encargará nuestro <strong>Routes</strong>.</p>
+<p><strong>Paso 3</strong>: Declaramos la ruta con <strong>Route</strong> y en ella indicamos el path y el componente que renderizará dicho path.</p>
+<aside class="special"><p> NOTA: React Router DOM puede ser capaz de renderizar varios elementos, pero estos deben ser envueltos en un solo componente para respetar la renderización por JSX (únicamente un elemento). </p>
+</aside>
+<p>Un ejemplo completo de React Router DOM se puede visualizar de la siguiente manera</p>
+<pre><code language="language-javascript" class="language-javascript">import { render } from &#34;react-dom&#34;;
+import { BrowserRouter, Routes, Route } from &#34;react-router-dom&#34;;
+import App from &#34;./App&#34;;
+import Expenses from &#34;./routes/expenses&#34;;
+import Invoices from &#34;./routes/invoices&#34;;
+
+const rootElement = document.getElementById(&#34;root&#34;);
+render(
+  &lt;BrowserRouter&gt;
+    &lt;Routes&gt;
+      &lt;Route path=&#34;/&#34; element={&lt;App /&gt;} /&gt;
+      &lt;Route path=&#34;expenses&#34; element={&lt;Expenses /&gt;} /&gt;
+      &lt;Route path=&#34;invoices&#34; element={&lt;Invoices /&gt;} /&gt;
+    &lt;/Routes&gt;
+  &lt;/BrowserRouter&gt;,
+  rootElement
+);
+</code></pre>
+<aside class="special"><p> NOTA: Puedes leer más en el siguiente <a href="https://reactrouter.com/docs/en/v6/getting-started/tutorial" target="_blank">enlace</a></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 6 - Creación de componentes para las rutas" duration="0">
+        <h2 is-upgraded>Introducción</h2>
+<p>Ahora que ya sabemos como funciona el enrutamiento, es necesario definir todas las rutas para que nuestro router funciones</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Creación de componentes.</li>
+<li>Rutas privadas y públicas</li>
+</ul>
+<h2 is-upgraded>Rutas públicas</h2>
+<p>Una ruta pública es como su nombre lo indica, es una ruta que puede acceder cualquier persona independientemente de su rol en la aplicación. En nuestro caso vamos a crear una ruta para un usuario con un rol de <strong>user</strong> (Esto basado en nuestra API de <a href="https://posts-pw2021.herokuapp.com/" target="_blank">POSTS</a>)</p>
+<h3 is-upgraded>Ruta publica - User</h3>
+<p>Crearemos un componente <strong>User</strong> que nos ayudará a mostrar un contenido público para un usuario con un rol <strong>USER</strong>. Para ello crearemos el siguiente componente. Crearemos en nuestra carpeta <strong>pages</strong> un directorio User con su respectivo archivo User.jsx. Quedando de la siguiente manera.</p>
+<pre>src
+├── pages
+├── ├── Login
+├── ├── ├── Login.jsx
+├── ├── User
+├── ├── ├── User.jsx
+├── App.css
+├── App.js
+├── App.test.js
+├── index.css
+├── index.js
+├── logo.svg
+├── serviceWorker.js
+└── setupTests.js
+</pre>
+<pre><code language="language-javascript" class="language-javascript">return (
+  &lt;section className=&#34;flex gap-4 flex-col lg:flex-row justify-around items-center p-6 lg:p-10 min-h-screen&#34;&gt;
+    &lt;div className=&#34;w-4/5 lg:w-1/2 gap-6 h-full flex flex-col justify-around items-center&#34;&gt;
+      &lt;h2 className=&#34;text-5xl lg:text-6xl font-extrabold text-gray-800 text-center&#34;&gt;
+        User page
+      &lt;/h2&gt;
+      &lt;h3 className=&#34;text-lg font-medium text-gray-700 text-center&#34;&gt;
+        An admin role is not required to access this page
+      &lt;/h3&gt;
+
+      &lt;p className=&#34;text-xl font-medium text-gray-400 text-center mt-6&#34;&gt;
+        All users can visit this page if their credentials are valid
+      &lt;/p&gt;
+
+      &lt;button
+        onClick={logoutHandler}
+        className=&#34;mt-6 w-1/2 lg:w-1/3 transition rounded border border-blue-500 duration-300 ease-in-out text-lg text-extrabold uppercase bg-blue-500 hover:bg-blue-700 py-2 px-4 text-gray-100&#34;
+      &gt;
+        Log out
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div className=&#34;w-4/5 lg:w-1/2 flex justify-center items-center&#34;&gt;
+      &lt;img className=&#34;w-4/5&#34; src={user} /&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+);
+</code></pre>
+<p>Explicando el código mostrado:</p>
+<p><strong>Paso 1</strong>: Declaramos nuestro estructura HTML con los diferentes estilos utilizando <a href="https://tailwindcss.com/docs/guides/create-react-app" target="_blank">tailwind</a>.</p>
+<p>Ahora que ya tenemos nuestra estructura HTML, nos dispondremos a realizar todas las validaciones necesarias para una ruta, para las cuales necesitamos</p>
+<p>✅ A nuestra ruta solo pueden acceder si se encuentran logueados.</p>
+<p>✅ Si poseen un rol específico (En nuestro caso, que nuestro rol sea <strong>user</strong>)</p>
+<p>Antes de realizar dichas validaciones es necesario definir unos conceptos referentes a React Router DOM</p>
+<h3 is-upgraded>Navegación en React Router DOM</h3>
+<p>Si se quiere redireccionar desde un componente a otro componente es necesario que sea indicado. Para ello React Router DOM nos proporciona sus propios hooks (custom hooks).</p>
+<p>El primer hook es llamado <strong>useNavigate</strong>. El cual nos proporciona una función a la que le podemos indicar hacia que ruta deseamos ir.</p>
+<p>El segundo hook es llamado <strong>Navigate</strong>. El cual obliga al componente a renderizar otro componente.</p>
+<aside class="special"><p> IMPORTANTE: Navigate como tal no es un hook ya que este no necesita instancias. Navigate se puede visualizar como un componente que renderiza otro componente. Esto es importante si se desea redirigir sin una verificación previa. </p>
+</aside>
+<aside class="special"><p> IMPORTANTE: La diferencia entre useNavigate y Navigate es que useNavigate necesita ser llamado (invocado) ya que es una funcion, en cambio Redirect se puede visualizar como un componente. </p>
+</aside>
+<aside class="special"><p> NOTA: Un custom hook se puede visualizar como una caja negra. La cual nos proporciona metodos y funcionalidades pero no indica como se realizan. </p>
+</aside>
+<pre><code language="language-javascript" class="language-javascript">const navigate = useNavigate();
+const { logout } = useUserContext();
+
+const logoutHandler = () =&gt; {
+  logout();
+  navigate(&#34;/login&#34;);
+};
+</code></pre>
+<p>Explicando el bloque de código mostrado</p>
+<p><strong>Paso 1</strong>: Hacemos uso del hook useNavigate para redirecciones y creamos una instancia de este.</p>
+<p><strong>Paso 2</strong>: Creamos el método <strong>logoutHandler</strong> que hará uso del metodo logout creado anteriormente en nuestro contexto para limpiar nuestro localStorage y nuestro estado global.</p>
+<p><strong>Paso 3</strong>: Al crear una instancia de useNavigate , hacemos uso de ella indicandole la ruta a la que debe ir, en nuestro caso a <strong>login</strong>.</p>
+<p>Si se ha seguido correctamente, se deberá tener en nuestro componente <strong>User</strong> la siguiente estructura.</p>
+<pre><code language="language-javascript" class="language-javascript">import { useUserContext } from &#34;../../contexts/UserContext&#34;;
+import { useNavigate } from &#34;react-router-dom&#34;;
+import user from &#34;../../assets/img/user.png&#34;;
+
+export default function User() {
+  const navigate = useNavigate();
+  const { logout } = useUserContext();
+
+  const logoutHandler = () =&gt; {
+    logout();
+    navigate(&#34;/login&#34;);
+  };
+
+  return (
+    &lt;section className=&#34;flex gap-4 flex-col lg:flex-row justify-around items-center p-6 lg:p-10 min-h-screen&#34;&gt;
+      &lt;div className=&#34;w-4/5 lg:w-1/2 gap-6 h-full flex flex-col justify-around items-center&#34;&gt;
+        &lt;h2 className=&#34;text-5xl lg:text-6xl font-extrabold text-gray-800 text-center&#34;&gt;
+          User page
+        &lt;/h2&gt;
+        &lt;h3 className=&#34;text-lg font-medium text-gray-700 text-center&#34;&gt;
+          An admin role is not required to access this page
+        &lt;/h3&gt;
+
+        &lt;p className=&#34;text-xl font-medium text-gray-400 text-center mt-6&#34;&gt;
+          All users can visit this page if their credentials are valid
+        &lt;/p&gt;
+
+        &lt;button
+          onClick={logoutHandler}
+          className=&#34;mt-6 w-1/2 lg:w-1/3 transition rounded border border-blue-500 duration-300 ease-in-out text-lg text-extrabold uppercase bg-blue-500 hover:bg-blue-700 py-2 px-4 text-gray-100&#34;
+        &gt;
+          Log out
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;div className=&#34;w-4/5 lg:w-1/2 flex justify-center items-center&#34;&gt;
+        &lt;img className=&#34;w-4/5&#34; src={user} /&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}
+</code></pre>
+<h2 is-upgraded>Rutas privadas</h2>
+<p>Una ruta privada como su nombre lo indica es una ruta que necesita de condiciones específicas para que se pueda acceder a ella.</p>
+<h3 is-upgraded>Ruta privada - Admin</h3>
+<p>Crearemos un componente <strong>Admin</strong> que muestre información general pero que solo se puedan acceder a ella las personas que posean un rol de administrador. Para ello crearemos en nuestra carpeta <strong>pages</strong> el directorio Admin con su respectivo archivo, quedando de la siguiente manera</p>
+<pre>src
+├── pages
+├── ├── Login
+├── ├── ├── Login.jsx
+├── ├── Admin
+├── ├── ├── Admin.jsx
+├── ├── User
+├── ├── ├── User.jsx
+├── App.css
+├── App.js
+├── App.test.js
+├── index.css
+├── index.js
+├── logo.svg
+├── serviceWorker.js
+└── setupTests.js
+</pre>
+<pre><code language="language-javascript" class="language-javascript">return (
+  &lt;section className=&#34;flex gap-4 flex-col lg:flex-row justify-around items-center p-6 lg:p-10 min-h-screen&#34;&gt;
+    &lt;div className=&#34;w-4/5 lg:w-1/2 gap-6 h-full flex flex-col justify-around items-center&#34;&gt;
+      &lt;h2 className=&#34;text-5xl lg:text-6xl font-extrabold text-gray-800 text-center&#34;&gt;
+        Admin page
+      &lt;/h2&gt;
+      &lt;h3 className=&#34;text-lg font-medium text-gray-700 text-center&#34;&gt;
+        Only users with the admin role can view this page
+      &lt;/h3&gt;
+
+      &lt;p className=&#34;text-xl font-medium text-gray-400 text-center mt-6&#34;&gt;
+        If you want to see this page you have to ask permission from the
+        administrators of the application
+      &lt;/p&gt;
+
+      &lt;button
+        onClick={logoutHandler}
+        className=&#34;mt-6 w-1/2 lg:w-1/3 transition rounded border border-blue-500 duration-300 ease-in-out text-lg text-extrabold uppercase bg-blue-500 hover:bg-blue-700 py-2 px-4 text-gray-100&#34;
+      &gt;
+        Log out
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div className=&#34;w-4/5 lg:w-1/2 flex justify-center items-center&#34;&gt;
+      &lt;img className=&#34;w-4/5&#34; src={ADMIN} /&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+);
+</code></pre>
+<aside class="special"><p> NOTA: El componente User y Admin tienen una misma estructura. solo cambia su contenido. Esto es con el fin de simular dicho enrutamiento. </p>
+</aside>
+<p>Al igual que el componente <strong>User</strong> se creará los métodos utilizando <strong>useNavigate</strong> quedando de la siguiente manera</p>
+<pre><code language="language-javascript" class="language-javascript">const navigate = useNavigate();
+const { logout } = useUserContext();
+
+const logoutHandler = () =&gt; {
+  logout();
+  navigate(&#34;/login&#34;);
+};
+</code></pre>
+<p>Ahora como resultado final tendremos un componente Admin con el siguiente contenido</p>
+<pre><code language="language-javascript" class="language-javascript">import { useUserContext } from &#34;../../contexts/UserContext&#34;;
+import { useNavigate } from &#34;react-router-dom&#34;;
+import ADMIN from &#34;../../assets/img/admin-img.png&#34;;
+
+export default function Admin() {
+  const navigate = useNavigate();
+  const { logout } = useUserContext();
+
+  const logoutHandler = () =&gt; {
+    logout();
+    navigate(&#34;/login&#34;);
+  };
+
+  return (
+    &lt;section className=&#34;flex gap-4 flex-col lg:flex-row justify-around items-center p-6 lg:p-10 min-h-screen&#34;&gt;
+      &lt;div className=&#34;w-4/5 lg:w-1/2 gap-6 h-full flex flex-col justify-around items-center&#34;&gt;
+        &lt;h2 className=&#34;text-5xl lg:text-6xl font-extrabold text-gray-800 text-center&#34;&gt;
+          Admin page
+        &lt;/h2&gt;
+        &lt;h3 className=&#34;text-lg font-medium text-gray-700 text-center&#34;&gt;
+          Only users with the admin role can view this page
+        &lt;/h3&gt;
+
+        &lt;p className=&#34;text-xl font-medium text-gray-400 text-center mt-6&#34;&gt;
+          If you want to see this page you have to ask permission from the
+          administrators of the application
+        &lt;/p&gt;
+
+        &lt;button
+          onClick={logoutHandler}
+          className=&#34;mt-6 w-1/2 lg:w-1/3 transition rounded border border-blue-500 duration-300 ease-in-out text-lg text-extrabold uppercase bg-blue-500 hover:bg-blue-700 py-2 px-4 text-gray-100&#34;
+        &gt;
+          Log out
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;div className=&#34;w-4/5 lg:w-1/2 flex justify-center items-center&#34;&gt;
+        &lt;img className=&#34;w-4/5&#34; src={ADMIN} /&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  );
+}
+</code></pre>
+<h2 is-upgraded>Rutas desconocidas.</h2>
+<p>A menudo ocurre que un usuario escribe una ruta que no esta siendo controlada, por ejemplo, si se escribe &#34;jldjadljal&#34; , nuestro enrutamiendo no estará controlando dicha ruta. Por ese motivo es necesario crear un componente que se renderice en dichos casos.</p>
+<h3 is-upgraded>Ruta desconocida - 404</h3>
+<p>Crearemos un componente llamada <strong>NotFound</strong> que se mostrará cuando nuestro ususario escriba una ruta que no existe. Crearemos dicho componente en nuestra carpeta <strong>pages</strong> quedando de la siguiente manera.</p>
+<pre>src
+├── pages
+├── ├── Login
+├── ├── ├── Login.jsx
+├── ├── Admin
+├── ├── ├── Admin.jsx
+├── ├── User
+├── ├── ├── User.jsx
+├── ├── NotFound
+├── ├── ├── NotFound.jsx
+├── App.css
+├── App.js
+├── App.test.js
+├── index.css
+├── index.js
+├── logo.svg
+├── serviceWorker.js
+└── setupTests.js
+</pre>
+<pre><code language="language-javascript" class="language-javascript">return (
+  &lt;div className=&#34;flex flex-col justify-center items-center w-screen h-screen bg-gray-200&#34;&gt;
+    &lt;ImSad className=&#34;text-8xl m-4&#34; /&gt;
+    &lt;h2 className=&#34;text-6xl font-roboto text-center mb-6&#34;&gt;404&lt;/h2&gt;
+    &lt;h3 className=&#34;text-xl font-roboto text-center&#34;&gt;Page not found&lt;/h3&gt;
+    &lt;p className=&#34;text-lg font-roboto text-center&#34;&gt;
+      The page you are looking for doesnt exist or an other error occurred
+    &lt;/p&gt;
+    &lt;button className=&#34;font-roboto bg-gray-300 m-4 py-2 px-4 rounded&#34;&gt;
+      Go to Login
+    &lt;/button&gt;
+  &lt;/div&gt;
+);
+</code></pre>
+<p>Explicando el bloque de código.</p>
+<p><strong>Paso 1</strong>: Se crea una estructura HTML sencilla para mostrar que no encontramos dicha página en nuestro enrutador.</p>
+<p>Es importante redireccionar al usuario a una página que exista, para ello declararemos un evento <strong>onClick</strong> que nos ayude a realizar dicha acción.</p>
+<pre><code language="language-javascript" class="language-javascript">const navigate = useNavigate();
+
+const onClick = (e) =&gt; {
+  navigate(&#34;/login&#34;);
+};
+</code></pre>
+<p>Explicando el bloque de código.</p>
+<p><strong>Paso 1</strong>: De igual manera que con nuestras rutas públicas y privadas, declaramos nuestro <strong>useNavigate</strong> y creamos una instancia de el.</p>
+<p><strong>Paso 2</strong>: Creamos un método onClick que se encargue de navegar hacia una ruta específica, en nuestro caso <strong>login</strong>.</p>
+<p>Actualizando nuestro componente, quedaría de la siguiente manera.</p>
+<pre><code language="language-javascript" class="language-javascript">import { ImSad } from &#34;react-icons/all&#34;;
+import { useNavigate } from &#34;react-router-dom&#34;;
+
+const NotFound = () =&gt; {
+  const navigate = useNavigate();
+
+  const onClick = (e) =&gt; {
+    navigate(&#34;/login&#34;);
+  };
+
+  return (
+    &lt;div className=&#34;flex flex-col justify-center items-center w-screen h-screen bg-gray-200&#34;&gt;
+      &lt;ImSad className=&#34;text-8xl m-4&#34; /&gt;
+      &lt;h2 className=&#34;text-6xl font-roboto text-center mb-6&#34;&gt;404&lt;/h2&gt;
+      &lt;h3 className=&#34;text-xl font-roboto text-center&#34;&gt;Page not found&lt;/h3&gt;
+      &lt;p className=&#34;text-lg font-roboto text-center&#34;&gt;
+        The page you are looking for doesn&#39;t exist or an other error occurred
+      &lt;/p&gt;
+      &lt;button
+        className=&#34;font-roboto bg-gray-300 m-4 py-2 px-4 rounded&#34;
+        onClick={(e) =&gt; onClick(e)}
+      &gt;
+        Go to Login
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default NotFound;
+</code></pre>
+<p>Ahora que tenemos todas nuestras rutas, podemos comenzar a trabajar sobre ellas.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 7 - Protegiendo una ruta" duration="0">
+        <h2 is-upgraded>Introducción</h2>
+<p>Como algunos de nuestros componentes necesitamos que sean privados, es necesario hacer las verificaciones necesarias, para ellos crearemos nuestro componente que verifique dichas reglas.</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Protección de rutas.</li>
+<li>Redireccionamiento dinámico.</li>
+</ul>
+<h2 is-upgraded>Redireccionar al usuario - RedirectUser</h2>
+<p>Crearemos nuestro directorio Redirect adentro de pages con su respectivo archivo RedirectUser.jsx, quedando de la siguiente manera</p>
+<pre>src
+├── pages
+├── ├── Login
+├── ├── ├── Login.jsx
+├── ├── Admin
+├── ├── ├── Admin.jsx
+├── ├── User
+├── ├── ├── User.jsx
+├── ├── NotFound
+├── ├── ├── NotFound.jsx
+├── ├── Redirect
+├── ├── ├── RedirectUser.jsx
+├── App.css
+├── App.js
+├── App.test.js
+├── index.css
+├── index.js
+├── logo.svg
+├── serviceWorker.js
+└── setupTests.js
+</pre>
+<pre><code language="language-javascript" class="language-javascript">import { useUserContext } from &#34;../../contexts/UserContext&#34;;
+import { Navigate } from &#34;react-router-dom&#34;;
+
+const rolePages = {
+  admin: &#34;/admin&#34;,
+  user: &#34;/user&#34;,
+};
+
+const RedirectUser = () =&gt; {
+  const { user } = useUserContext();
+
+  if (!user) return &lt;p&gt; No se puede redireccionar &lt;/p&gt;;
+
+  return &lt;Navigate replace to={rolePages[user.role] ?? &#34;/&#34;} /&gt;;
+};
+
+export default RedirectUser;
+</code></pre>
+<p>Explicando el bloque de código mostrado</p>
+<p><strong>Paso 1</strong>: Importamos nuestro contexto y Navigate</p>
+<p><strong>Paso 2</strong>: Definimos todos los roles que existen en nuestra aplicación con ayuda de un objeto.</p>
+<p><strong>Paso 3</strong>: Como useUserContext nos brinda el usuario actual con su respectivo role, verificamos que se tenga un usuario. Si no se tiene un usuario, mostramos un mensaje que no se puede redireccionar.</p>
+<p><strong>Paso 4</strong>: Caso contrario, redireccionamos hacia la ruta corresponiente con la ayuda de Navigate</p>
+<h2 is-upgraded>Ruta protegida - PrivateRoute</h2>
+<p>Dado que algunas rutas no están disponibles, es necesario definir un componente que nos ayude a hacer nuestras verificaciones. Para ellos creamos en nuestro directorio <strong>Components</strong> un directorio <strong>PrivateRoute</strong> con su respectivo archivo <strong>PrivateRoute.jsx</strong> quedando de la siguiente manera.</p>
+<pre>src
+├── Components
+├── ├── PrivateRoute
+├── ├── ├── PrivateRoute.jsx
+├── pages
+├── ├── Login
+├── ├── ├── Login.jsx
+├── ├── Admin
+├── ├── ├── Admin.jsx
+├── ├── User
+├── ├── ├── User.jsx
+├── ├── NotFound
+├── ├── ├── NotFound.jsx
+├── ├── Redirect
+├── ├── ├── RedirectUser.jsx
+├── App.css
+├── App.js
+├── App.test.js
+├── index.css
+├── index.js
+├── logo.svg
+├── serviceWorker.js
+└── setupTests.js
+</pre>
+<pre><code language="language-javascript" class="language-javascript">import { useUserContext } from &#34;./../../contexts/UserContext&#34;;
+import { Navigate } from &#34;react-router-dom&#34;;
+
+const PrivateRoute = ({ role = &#34;user&#34;, children }) =&gt; {
+  const { token, user } = useUserContext();
+
+  if (!token) return &lt;Navigate replace to=&#34;/login&#34; /&gt;;
+  if (!user || user.role !== role) return &lt;Navigate replace to=&#34;/404&#34; /&gt;;
+
+  return children;
+};
+
+export default PrivateRoute;
+</code></pre>
+<p>Describiendo el bloque de código.</p>
+<p><strong>Paso 1</strong>: Importamos el contexto y Navigate para redireccionar.</p>
+<p><strong>Paso 2</strong>: Para proteger nuestra ruta es importante conocer el rol de la persona y el rol que necesita nuestra private Route. Por ejemplo, si nuestra ruta privada necesita un rol de admin, eso se comparará con el rol guardado en nuestro contexto para saber si tiene permiso. Para ello nuestra PrivateRoute recibirá como propiedad un <strong>role</strong> que indicará el rol necesario para acceder a dicha ruta.</p>
+<p><strong>Paso 3</strong>: Nuestra ruta privada únicamente verifica que se cumplan los requerimientos, pero es necesario indicar que componente está protegiendo. Para ello se pasará la propiedad especial <strong>children</strong> la cual contendrá el componente que se está protegiendo.</p>
+<p><strong>Paso 4</strong>: Realizamos las comparaciones necesarias. Si no existe el token, significa que nuestro usuario no está logueado, entonces es necesario redireccionarlo hacia el login. También si no se cumple el rol para entrar, será redireccionado hacia una página 404 (Acá puede ser otra página).</p>
+<p>Ya estamos listos para usar enrutar toda nuestra aplicación.</p>
+<h3 is-upgraded>Recordando - propiedad especial children</h3>
+<p>Existen dos formar de invocar a un componente, la tradicional y más conocida.</p>
+<pre><code language="language-javascript" class="language-javascript">&lt;Component title=&#34;my-component&#34; age=&#34;age-component&#34; /&gt;
+</code></pre>
+<p>Donde <strong>title</strong> y <strong>age</strong> son propiedades de nuestro componente.</p>
+<p>Pero existe una forma particular de renderizar un componente, que es la siguiente.</p>
+<pre><code language="language-javascript" class="language-javascript">&lt;Component title=&#34;my-component&#34; age=&#34;age-component&#34;&gt;
+  &lt;h1&gt;Soy un Children&lt;/h1&gt;
+&lt;/Component&gt;
+</code></pre>
+<p>Siempre <strong>title</strong> y <strong>age</strong> son propiedades de nuestro componente pero nuestra etiqueta <strong>h1</strong> con el contenido <strong>Soy un children</strong> también es una propiedad que se encuentra en nuestro componente, la cual recibe el nombre de <strong>children</strong></p>
+<p class="image-container"><img alt="children" title="children prop" src="img\\3846738005950b36.png"></p>
+<aside class="special"><p> NOTA: En resumen, children se puede ver como el componente &#34;envuelto&#34; por nuestro componente padre. </p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 8 - Enrutando nuestra aplicación" duration="0">
+        <h2 is-upgraded>Introducción</h2>
+<p>Ahora que tenemos tanto nuestros componentes a renderizar como los componentes que nos ayudan a proteger las rutas, estamos listos para crear nuestro enrutamiento.</p>
+<p>Como hemos visto, para nuestro enrutamiento es necesario importar nuestro <strong>BrowserRouter, Routes, Route</strong>.</p>
+<pre><code language="language-javascript" class="language-javascript">import { BrowserRouter, Routes, Route } from &#34;react-router-dom&#34;;
+</code></pre>
+<p>Ya que estan importados, definiremos la estructura planteada anteriormente en nuestra Appo</p>
+<pre><code language="language-javascript" class="language-javascript">function App() {
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;Routes&gt;
+        &lt;Route path=&#34;/login&#34; element={&lt;Login /&gt;} /&gt;
+        &lt;Route path=&#34;/about&#34; element={&lt;About /&gt;} /&gt;
+        &lt;Route path=&#34;/redirect&#34; element={&lt;RedirectUser /&gt;}/&gt;
+
+        &lt;Route path=&#34;/admin&#34;  element={&lt;Private role=&#34;admin&#34;&gt;&lt;Admin /&gt;&lt;/Private&gt;} /&gt;
+        &lt;Route path=&#34;/user&#34;   element={&lt;Private role=&#34;user&#34;&gt; &lt;User /&gt; &lt;/Private&gt;} /&gt;
+
+        &lt;Route path=&#34;*&#34; element={&lt;NotFound /&gt;}/&gt;
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  );
+</code></pre>
+<p>Resumiendo el bloque de código</p>
+<p><strong>Paso 1</strong>: Creamos nuestro <strong>BrowserRouter</strong>, el cual estará pendiente de cualquier cambio en nuestra url.</p>
+<p><strong>Paso 2</strong>: Utilizamos <strong>Routes</strong> como una especie de &#34;switch&#34; para cambiar entre rutas.</p>
+<p><strong>Paso 3</strong>: Con <strong>Route</strong> definimos que ruta es y que componente debera renderizar en dicha ruta.</p>
+<aside class="special"><p> NOTA: El componente Admin y User serian la propiedad children que recibiría nuestro componente PrivateRoute (Áca llamado Private) </p>
+</aside>
+<p>Como resultado final obtendríamos</p>
+<pre><code language="language-javascript" class="language-javascript">import Login from &#34;./pages/Login/Login&#34;;
+import About from &#34;./pages/About/About&#34;;
+import Admin from &#34;./pages/Admin/Admin&#34;;
+import User from &#34;./pages/User/User&#34;;
+import NotFound from &#34;./pages/NotFound/NotFound&#34;;
+import RedirectUser from &#34;./pages/Redirect/RedirectUser&#34;;
+
+import Private from &#34;./Components/PrivateRoute/PrivateRoute&#34;;
+
+import { BrowserRouter, Routes, Route } from &#34;react-router-dom&#34;;
+
+import &#34;./App.css&#34;;
+
+// import {  } from &#39;&#39;
+
+function App() {
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;Routes&gt;
+        &lt;Route path=&#34;/login&#34; element={&lt;Login /&gt;} /&gt;
+        &lt;Route path=&#34;/about&#34; element={&lt;About /&gt;} /&gt;
+        &lt;Route path=&#34;/redirect&#34; element={&lt;RedirectUser /&gt;} /&gt;
+        &lt;Route
+          path=&#34;/admin&#34;
+          element={
+            &lt;Private role=&#34;admin&#34;&gt;
+              {&#34; &#34;}
+              &lt;Admin /&gt;{&#34; &#34;}
+            &lt;/Private&gt;
+          }
+        /&gt;
+        &lt;Route
+          path=&#34;/user&#34;
+          element={
+            &lt;Private role=&#34;user&#34;&gt;
+              {&#34; &#34;}
+              &lt;User /&gt;{&#34; &#34;}
+            &lt;/Private&gt;
+          }
+        /&gt;
+        &lt;Route path=&#34;*&#34; element={&lt;NotFound /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  );
+}
+
+export default App;
+</code></pre>
+<aside class="special"><p> NOTA: path=&#39;*&#39; es usado para indicar una ruta cualquiera. </p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Completaste el codelab" duration="0">
+        <p class="image-container"><img alt="finish" src="img\\59763cefe25bfbf7.gif"></p>
+<h2 is-upgraded>Has finalizado el laboratorio 04, esperamos te haya sido de mucha ayuda.</h2>
+<h2 is-upgraded>¡Continúa practicando!⭐</h2>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

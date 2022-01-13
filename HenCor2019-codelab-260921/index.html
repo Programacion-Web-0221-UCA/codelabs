@@ -1,0 +1,131 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Instalar nvm en diferentes entornos</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    *{
+      color: #474747;
+    }
+
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="Google Analytics ID"
+                  id="HenCor2019-codelab-260921"
+                  title="Instalar nvm en diferentes entornos"
+                  environment="web"
+                  feedback-link="https://github.com/nvm-sh/nvm/blob/master/README.md">
+    
+      <google-codelab-step label="Introducción" duration="5">
+        <h2 is-upgraded>¿Qué es NVM?</h2>
+<p>NVM por sus siglas <strong><em>Node Version Manager</em></strong> es un administrador de versiones de Node.js</p>
+<h2 is-upgraded>¿Por qué NVM?</h2>
+<p>Node.js es un entorno multiplataforma, lo que conlleva en muchas ocasiones a trabajar con diferentes frameworks que hacen uso de este entorno, por lo cual en mas de una ocasión necesitaremos versiones más actualizadas o pasadas de Node.js. NVM provee una forma sencilla y rápida de manejar estas diferentes versiones para evitarnos el trabajo de desinstalar e instalar la versión de Node.js requerida</p>
+<h2 is-upgraded>¿Qué aprenderás?</h2>
+<ul>
+<li>Instalar nvm en entornos Unix</li>
+<li>Instalar nvm en Windows</li>
+<li>Instalación manual de nvm para entornos como zhs</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Distribuciones Unix" duration="15">
+        <h2 is-upgraded>Acerca de nvm</h2>
+<p>nvm es un administrador de versiones para Node.js, diseñado para instalarse por usuario e invocarse por shell. nvm funciona en cualquier shell compatible con POSIX (sh, dash, ksh, zsh, bash), en particular en estas plataformas: unix, macOS y windows WSL.</p>
+<aside class="special"><p> Una de las ventajas de nvm es la facilidad de cambiar entre versiones de Node.js. </p>
+</aside>
+<h2 is-upgraded>Instalación</h2>
+<pre>curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+</pre>
+<pre>wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+</pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Instalación en Windows" duration="10">
+        <p>Para lograr obtener nvm para windows debemos ir al siguiente <a href="https://github.com/coreybutler/nvm-windows/releases" target="_blank">enlace</a> y descargar el archivo <strong>nvm-setup.zip</strong></p>
+<p>Descargamos el archivo, posteriormente lo descomprimimos para finalmente visualizar lo siguiente</p>
+<p class="image-container"><img alt="unzip nvm" title="nvm unzip" src="img\\4687ec3d8bc063f.png"></p>
+<p>Daremos doble click y aceptaremos las condiciones</p>
+<p class="image-container"><img alt="agrees nvm" title="nvm agree" src="img\\31ef01b95eea8f5d.png"></p>
+<p>Luego de la instalaciones podremos ver el siguiente mensaje</p>
+<p class="image-container"><img alt="successfully nvm" title="nvm finish" src="img\\71e910f7a4b02c77.png"></p>
+<p>Confirmando la instalación de nvm en Windows realizar en el <strong>simbolo del sistema</strong></p>
+<pre>nvm --version
+</pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Instalación de Node.js" duration="8">
+        <p>Escribir el siguiente comando en la terminal, debemos recibir como respuesta <code>npm</code></p>
+<pre>command -v nvm
+</pre>
+<h2 is-upgraded>Uso</h2>
+<pre>nvm install node
+</pre>
+<p>Si deseamos una version especifica de node escribir</p>
+<pre>nvm install 6.14.4
+</pre>
+<aside class="warning"><p> Debemos cambiar 6.14.4 por una version de Node.js de interés </p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Instalación de npm" duration="5">
+        <p>Verificamos si se ha instalado de manera automática <code>npm</code></p>
+<pre>npm --version
+</pre>
+<h2 is-upgraded>Instalación manual de npm</h2>
+<pre>nvm install-latest-npm
+</pre>
+<aside class="special"><p> Si se presenta el error &#34;npm does not support Node.js&#34; desinstalar Node.js y ejecutar nvm install --latest-npm </p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Instalación manual de nvm" duration="3">
+        <p>Agregar las siguientes lineas a nuestro <code>~/.bashrc</code>, <code>~/.profile</code>, or <code>~/.zshrc</code></p>
+<pre><code language="language-sh" class="language-sh">export NVM_DIR=&#34;$HOME/.nvm&#34;
+[ -s &#34;$NVM_DIR/nvm.sh&#34; ] &amp;&amp; \. &#34;$NVM_DIR/nvm.sh&#34; # This loads nvm
+[ -s &#34;$NVM_DIR/bash_completion&#34; ] &amp;&amp; \. &#34;$NVM_DIR/bash_completion&#34;
+</code></pre>
+<aside class="warning"><p> Esta instalación es recomendable para entornos zsh </p>
+</aside>
+<h2 is-upgraded>Gracias</h2>
+<p>Gracias por llegar hasta acá, cualquier duda o consulta acerca de esta instalación no dudes en hacerla</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+  <script src="../scripts/main.js"></script>
+
+</body>
+</html>

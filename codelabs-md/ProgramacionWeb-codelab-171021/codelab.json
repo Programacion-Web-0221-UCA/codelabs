@@ -1,0 +1,27 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2021-11-08T18:10:09-06:00",
+  "id": "ProgramacionWeb-codelab-171021",
+  "duration": 25,
+  "title": "Mi Pokedex nacional",
+  "summary": "Laboratorio 03 consumiendo la PokeAPI",
+  "source": "codelab-lab03.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown"
+  ],
+  "tags": [
+    "iguide",
+    "web",
+    "workshop"
+  ],
+  "ga": "Google Analytics ID",
+  "url": "ProgramacionWeb-codelab-171021"
+}

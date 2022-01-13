@@ -1,0 +1,27 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2021-11-07T16:37:38-06:00",
+  "id": "ProgramacionWeb-codelab-071121",
+  "duration": 5,
+  "title": "Crear una aplicación de React",
+  "summary": "Creacion de aplicación de React",
+  "source": "codelab-install-react.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown"
+  ],
+  "tags": [
+    "iguide",
+    "web",
+    "workshop"
+  ],
+  "ga": "Google Analytics ID",
+  "url": "ProgramacionWeb-codelab-071121"
+}

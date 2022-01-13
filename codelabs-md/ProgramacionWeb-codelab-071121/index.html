@@ -1,0 +1,142 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Crear una aplicación de React</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="Google Analytics ID"
+                  id="ProgramacionWeb-codelab-071121"
+                  title="Crear una aplicación de React"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Bienvenida" duration="5">
+        <p>En este codelab aprenderás a como iniciar una aplicación de react usando diferentes empaquetadores.</p>
+<h2 is-upgraded>Resultado esperado</h2>
+<p class="image-container"><img alt="React-running" title="react running" src="img\\a8cb80fcb71189a6.gif"></p>
+<h2 is-upgraded>¿Qué aprenderás?</h2>
+<ul>
+<li>Crear una aplicación de React.</li>
+<li>Conocer diferentes empaquetadores.</li>
+</ul>
+<h2 is-upgraded>Pre requisitos</h2>
+<ul>
+<li>Node instalado (nvm recomendado).</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Iniciar una aplicación de React" duration="0">
+        <p>Para instalar una aplicación de React es necesario poseer una versión de <strong>Node</strong> superior a 14.0.0. Si no se tiene instalado <strong>Node</strong> es recomendable realizar dicha instalación utilizando <a href="https://hencor2019.github.io/nvm-guide/HenCor2019-codelab-260921/index.html#0" target="_blank">nvm</a>. También es recomendable utilizar las versiones <strong>LTS</strong> ya que son versiones estables y podemos evitar problemas de compatibilidad. Para crear una aplicación de React podemos escoger diferentes métodos.</p>
+<h2 is-upgraded>npx (recomendada)</h2>
+<pre>npx create-react-app my-app
+</pre>
+<aside class="special"><p> npx se incluye en versiones npm 5.2 y superiores. </p>
+</aside>
+<aside class="special"><p> NOTA: npx descarga de manera temporal create-react-app y luego nos lo ejecuta de manera automática. </p>
+</aside>
+<h2 is-upgraded>npm</h2>
+<p>Nos aseguramos de instalar <strong>create-react-app</strong> con <strong>npm</strong> de manera global</p>
+<pre>npm install -g create-react-app
+</pre>
+<p>Iniciamos una aplicación de React ejecutando.</p>
+<pre>create-react-app my-app
+</pre>
+<h2 is-upgraded>yarn</h2>
+<p><strong>yarn</strong> es un manejador de paquetes distribuido por Facebook. Instalamos el paquete con el siguiente comando.</p>
+<pre>npm install --global yarn
+</pre>
+<p>Verificamos que se haya instalado de manera exitosa.</p>
+<pre>yarn --version
+</pre>
+<p>Ahora ejecutamos el siguiente comando para iniciar una aplicación de React con <strong>yarn</strong>.</p>
+<pre>yarn create react-app my-app
+</pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Ruta de directorios" duration="0">
+        <p>Independientemente del manejador de paquetes que hayamos usado, se nos creara una carpeta <strong>my-app</strong> dentro de la carpeta donde ejecutamos el comando. Dentro del cual se creará la estructura inicial del proyecto con las dependencias previamente instaladas.</p>
+<pre>my-app
+├── README.md
+├── node_modules
+├── package.json
+├── .gitignore
+├── public
+├── ├── favicon.ico
+├── ├── index.html
+├── └── manifest.json
+└── src
+    ├── App.css
+    ├── App.js
+    ├── App.test.js
+    ├── index.css
+    ├── index.js
+    ├── logo.svg
+    └── serviceWorker.js
+    └── setupTests.js
+</pre>
+<aside class="special"><p> Create React App evita la creación de archivos innecesarios. Dejando únicamente los archivos necesarios para compilar la aplicación. Una vez realizada la instalación debemos cambiar al directorio. </p>
+</aside>
+<pre>cd my-app
+</pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Iniciar la aplicación" duration="0">
+        <h2 is-upgraded>npm</h2>
+<p>Si se utilizó <strong>npx</strong> o <strong>npm</strong> para crear nuestra aplicación de React, ejecutar.</p>
+<pre>npm start
+</pre>
+<h2 is-upgraded>yarn</h2>
+<p>Si se utilizó <strong>yarn</strong> como manejador de paquetes iniciaremos nuestra aplicación con el siguiente comando.</p>
+<pre>yarn start
+</pre>
+<aside class="special"><p> NOTA: Por defecto React ocupa el puerto 3000 para construir nuestra aplicación de manera local. </p>
+</aside>
+<h2 is-upgraded>Resultado</h2>
+<p class="image-container"><img alt="React-running" title="react running" src="img\\a8cb80fcb71189a6.gif"></p>
+<h2 is-upgraded>Incluir tailwind en React</h2>
+<p>Si deseas incluir <strong>tailwind</strong> en tu aplicación de React, te recomendamos el siguiente codelab de como <a href="https://carolinamcc15.github.io/tailwind-guide/#0" target="_blank">incluir Tailwind</a> en tu aplicación.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Completaste el codelab" duration="0">
+        <p class="image-container"><img alt="finish" src="img\\59763cefe25bfbf7.gif"></p>
+<h2 is-upgraded>Has finalizado la instalacion de React, esperamos te haya sido de mucha ayuda.</h2>
+<h2 is-upgraded>¡Continúa practicando!⭐</h2>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

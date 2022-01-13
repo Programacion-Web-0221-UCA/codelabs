@@ -1,0 +1,27 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2021-11-03T18:27:29-06:00",
+  "id": "ProgramacionWeb-codelab-011121",
+  "duration": 55,
+  "title": "Manejo de usuarios con Promesas",
+  "summary": "Promesas en js",
+  "source": "codelab-lab02.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown"
+  ],
+  "tags": [
+    "iguide",
+    "web",
+    "workshop"
+  ],
+  "ga": "Google Analytics ID",
+  "url": "ProgramacionWeb-codelab-011121"
+}

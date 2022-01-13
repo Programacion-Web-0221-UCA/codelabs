@@ -1,0 +1,290 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Control de mis finanzas</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    body{
+      color: #474747;
+    }
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="Google Analytics ID"
+                  id="ProgramacionWeb-codelab-171021"
+                  title="Control de mis finanzas"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Bienvenida" duration="5">
+        <p>En este curso aprenderás acerca de cómo manejar el DOM en JavaScript de manera fácil y sencilla, crear estructuras de datos personalizadas, además de delegar eventos a etiquetas para la realización de funcionalidades controladas.</p>
+<h2 is-upgraded>Resultado esperado</h2>
+<p class="image-container"><img alt="final result" title="result" src="img\\bf85a21464578180.gif"></p>
+<h2 is-upgraded>¿Qué aprenderás?</h2>
+<ul>
+<li>Manejo de DOM en JavaScript.</li>
+<li>Manejo de eventos en formularios.</li>
+<li>Introducción a la programación funcional.</li>
+<li>Renderizar condicionalmente elementos</li>
+<li>Renderizar listas de manera dinámica.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Configuración del entorno" duration="10">
+        <h2 is-upgraded>IDE</h2>
+<p>El editor de texto a trabajar será Visual Studio Code, si no tienes instalado dicho editor lo puedes descargar desde el siguiente <a href="https://code.visualstudio.com/" target="_blank">enlace</a>.</p>
+<h2 is-upgraded>Clonar el repositorio base</h2>
+<p>Asumimos que tienes instalado <a href="https://git-scm.com/" target="_blank">git</a>, clona el repositorio <a href="https://github.com/Programacion-Web-0221-UCA/L01-JSDOM" target="_blank">base</a> de la siguiente manera en tu lugar de preferencia:</p>
+<pre>git clone https://github.com/Programacion-Web-0221-UCA/L01-JSDOM.git
+</pre>
+<p>Después de clonar el repositorio accedemos a él mediante el comando:</p>
+<pre>cd L01-JSDOM
+</pre>
+<h2 is-upgraded>Archivos</h2>
+<p>En el repositorio encontrarás el archivo <strong>index.html</strong> junto a los estilos propuestos en el archivo <strong>styles.css</strong>.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 1 - Funciones lógicas" duration="15">
+        <h2 is-upgraded>Introducción</h2>
+<p>Las funciones lógicas son aquellas que nos indican cómo será el funcionamiento de nuestro programa, además de indicar la estructura de nuestras variables.</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Conocimiento de variables globales.</li>
+<li>Uso correcto de objectos o diccionarios.</li>
+</ul>
+<h2 is-upgraded>Variables globales y su composición</h2>
+<p>Declara al inicio del archivo <strong>main.js</strong> una variable llamada <strong>transactions</strong>, la cual nos ayudará a guardar todas las transacciones que se ingresen en nuestra página web.</p>
+<aside class="warning"><p> NOTA: transactions deberá ser un arreglo, ya que necesitamos guardar numerosas transacciones. </p>
+</aside>
+<h2 is-upgraded>Objetos o diccionarios</h2>
+<p>Lo objectos o diccionarios son elementos no primitivos compuestos por una clave-valor que nos ayudan a almacenar en un mismo contenedor diferentes elementos diferenciados por una llave única, la cual contendrá un dato ingresado.</p>
+<p>A continuación se ejemplifica de manera gráfica un objeto en Javascript:</p>
+<p class="image-container"><img alt="Objeto" title="objeto example" src="img\\af69b33313e47e64.png"></p>
+<h2 is-upgraded>Agregando una transacción</h2>
+<p>Declararemos una función llamada <code>addTransaction</code> que nos ayudará a manejar la lógica de agregar una nueva transacción a nuestro arreglo. Para ello necesitamos definir que será una transacción, la cual cuenta con tres características principales:</p>
+<ol type="1">
+<li>Un identificador único.</li>
+<li>Un concepto.</li>
+<li>Un monto.</li>
+</ol>
+<p>Con esto en mente declararemos un objecto que se encargará de contener dichos atributos.</p>
+<pre><code language="language-javascript" class="language-javascript">const addTransaction = (concept, amount) =&gt; {
+  const newTransaction = {
+    id: `Tsc_${new Date().getTime()}`,
+    concept: concept,
+    amount: Number(amount),
+  };
+
+  transactions.unshift(newTransaction);
+};
+</code></pre>
+<aside class="warning"><p> NOTA: El método unshift en array agrega un elemento al igual que push, con la diferente que el nuevo elemento será agregado al inicio, no al final. </p>
+</aside>
+<h2 is-upgraded>Validación de campos</h2>
+<p>Para evitar posibles errores, es necesario validar una transacción antes de que esta sea agregada, para lo cual es necesario asegurar lo siguiente:</p>
+<ul>
+<li>Que no se ingresen valores vacíos.</li>
+<li>Que el monto ingresado sea un número.</li>
+</ul>
+<p>Para ello declararemos una función llamada <strong>areValidFields</strong>, la cual se encargará de verificar si los campos ingresados son válidos o no.</p>
+<aside class="special"><p> NOTA: areValidFields devolverá un valor de tipo booleano que indicará si los valores son válidos o no. </p>
+</aside>
+<pre><code language="language-javascript" class="language-javascript">const areValidFields = (concept, amount) =&gt; {
+  if (!(concept &amp;&amp; amount)) return false;
+
+  const amountNumber = Number(amount);
+
+  if (isNaN(amountNumber)) return false;
+
+  return true;
+};
+</code></pre>
+<aside class="special"><p> NOTA: isNaN es una función que proveen los navegadores para verificar si el valor es un número válido. </p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 2 - Funciones de renderización" duration="20">
+        <h2 is-upgraded>Introducción</h2>
+<p>Las funciones de renderización nos ayudan a mostrar los cambios en pantalla a los usuarios.</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Uso de programación funcional.</li>
+<li>Renderización condicional.</li>
+</ul>
+<h2 is-upgraded>Renderizar una transacción</h2>
+<p>Para mostrar de manera visual una transacción haremos uso de HTML para brindarle semántica y aplicar estilos de una manera más sencilla, para lo cual, se propone el siguiente diseño:</p>
+<p class="image-container"><img alt="transaction" title="transaction design example" src="img\\5f226ad65c4878c4.png"></p>
+<p>Para ello, declararemos una función llamada <strong>renderListElement</strong> la cual recibirá de manera dinámica los elementos que necesitemos renderizar:</p>
+<pre><code language="language-javascript" class="language-javascript">const renderListElement = (concept = &#34;&#34;, amount = 0) =&gt; {
+  return `
+    &lt;li&gt;
+        &lt;div&gt;
+            &lt;p&gt;${concept}&lt;/p&gt;
+            &lt;p&gt;Concepto&lt;/p&gt;
+        &lt;/div&gt;
+                    
+        &lt;div&gt;
+            &lt;p&gt;$ ${amount.toFixed(2)}&lt;/p&gt;
+            &lt;p&gt;Monto&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/li&gt;
+    \n
+    `;
+};
+</code></pre>
+<aside class="warning"><p> NOTA: El método toFixed se encarga de aproximar los decimales de un número, la cantidad de decimales a aproximar deberá ser pasada como parámetro. </p>
+</aside>
+<h2 is-upgraded>Programación funcional: Reduce</h2>
+<p>Se necesita transformar nuestro arreglo de transacciones para que se muestren como elementos HTML renderizables, para lo cual podemos ocupar el método reduce que proveen los arreglos.</p>
+<p>Reduce es un método que por defecto, nos provee una variable acumuladora que nos permite, como su nombre indica, reducir un arregla a una mínima expresión en base a una función indicada, una vista general de reduce es: <img alt="reducer" title="reducer method" src="img\\20a35211e65c47c4.png"></p>
+<p>Ahora con el método reduce, podemos reducir cada elemento del array en un solo elemento renderizable, para lo cual nuestra <strong>función reduce</strong> retornará lo que tengamos acumulado concatenado con una nueva transacción en formato HTML.</p>
+<aside class="special"><p> NOTA: Declaramos una variable acumuladora para conocer el total de deudas o activo. </p>
+</aside>
+<aside class="warning"><p> NOTA: No es necesario declarar todos los parámetros que provee el método reduce. </p>
+</aside>
+<pre><code language="language-javascript" class="language-javascript">let totalAmount = 0;
+const transactionsHTML = transactions.reduce((acc, current) =&gt; {
+  const { concept, amount } = current;
+
+  totalAmount += amount;
+
+  return acc + `${renderListElement(concept, amount)}`;
+}, &#34;&#34;);
+</code></pre>
+<h2 is-upgraded>Renderizar todas las transacciones</h2>
+<p>Para renderizar nuestras transacciones manipularemos la etiqueta <strong>ol</strong> que se encuentra en nuestro <strong>index.html</strong>, la cual nos servirá como nuestro contenedor de transacciones. Para ello, haremos uso de los métodos <strong>innerHTML</strong> y <strong>textContent</strong> para mostrar todas las transacciones.</p>
+<h2 is-upgraded>Renderización condicional</h2>
+<p>En el caso que se detecten deudas, es decir, números negativos, se mostrará de manera visual dicha información. Esta información <strong>está condicionada por el total de dinero</strong>, por ello, se renderizará condicionalmente dicho parámetro.</p>
+<h3 is-upgraded>Operador ternario</h3>
+<p>De manera clásica se puede lograr renderizar algo de manera condicional de la siguiente manera:</p>
+<pre><code language="language-javascript" class="language-javascript">if (totalAmount &lt; 0) resultTitle.textContent = &#34;Debes&#34;;
+else resultTitle.textContent = &#34;Tienes&#34;;
+</code></pre>
+<p>En este caso podemos notar que es una sentencia de código en ambos casos, para lo cual Javascript provee de un <strong>operador ternario</strong> que realiza la misma acción de una forma más compacta y eficiente:</p>
+<pre><code language="language-javascript" class="language-javascript">resultTitle.textContent = totalAmount &lt; 0 ? &#34;Debes&#34; : &#34;Tienes&#34;;
+</code></pre>
+<p>Logrando el mismo resultado que de la manera clásica.</p>
+<h2 is-upgraded>Función de renderización</h2>
+<p>Se declarará una función que englobe todos los procesos previamente mencionados:</p>
+<pre><code language="language-javascript" class="language-javascript">const renderTransactions = () =&gt; {
+  const transactionsList = document.getElementById(&#34;transactions&#34;);
+  const resultTitle = document.querySelector(&#34;#result-container h3&#34;);
+  const resultAmount = document.querySelector(&#34;#result-container p&#34;);
+  let totalAmount = 0;
+
+  const transactionsHTML = transactions.reduce((acc, current) =&gt; {
+    const { concept, amount } = current;
+
+    totalAmount += amount;
+
+    return acc + `${renderListElement(concept, amount)}`;
+  }, &#34;&#34;);
+
+  transactionsList.innerHTML = transactionsHTML;
+
+  resultTitle.textContent = totalAmount &lt; 0 ? &#34;Debes&#34; : &#34;Tienes&#34;;
+  resultAmount.textContent = `$ ${totalAmount.toFixed(2)}`;
+};
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 3 - Listeners" duration="10">
+        <h2 is-upgraded>Introducción</h2>
+<p>Los listeners son eventos que serán invocados cuando realicemos acciones específicas dentro de nuestra página, algunos eventos pueden ser:</p>
+<ul>
+<li>submit</li>
+<li>click</li>
+<li>hover</li>
+<li>drag</li>
+<li>drop</li>
+</ul>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Uso de eventos en formularios.</li>
+<li>Uso de FormData en formularios HTML.</li>
+</ul>
+<h2 is-upgraded>Evento submit</h2>
+<p>Al poseer una etiqueta form en nuestro HTML, podemos hacer uso de el evento submit que equivale tanto a eventos <strong>enter</strong> en inputs como eventos <strong>click</strong> en botones. Manipulamos nuestro formulario y se asignamos el evento submit donde realizaremos los siguientes pasos</p>
+<ol type="1">
+<li>Obtener los valores de los inputs.</li>
+<li>Verificar si los valores son válidos.</li>
+<li>Crear y agregar la nueva transacción.</li>
+<li>Mostrar todas las transacciones.</li>
+</ol>
+<pre><code language="language-javascript" class="language-javascript">const addFormListener = () =&gt; {
+  const form = document.querySelector(&#34;#add-transaction-form&#34;);
+
+  form.addEventListener(&#34;submit&#34;, (e) =&gt; {
+    e.preventDefault();
+
+    const data = new FormData(form);
+
+    const conceptInput = data.get(&#34;concept&#34;);
+    const amountInput = data.get(&#34;amount&#34;);
+
+    if (!areValidFields(conceptInput, amountInput)) return;
+
+    addTransaction(conceptInput, amountInput);
+    renderTransactions();
+
+    form.reset();
+  });
+};
+</code></pre>
+<aside class="special"><p> NOTA: e.preventDefault() prevee el evento por defecto de los formularios, con el cual evitamos que se recargue la página. </p>
+</aside>
+<aside class="special"><p> NOTA: FormData es una forma de trabajar formularios HTML en base a nombres, los cuales son colocados con el atributo name en inputs. </p>
+</aside>
+<h2 is-upgraded>Iniciar nuestra App</h2>
+<p>Para iniciar nuestra app, se propone la siguiente estructura en código:</p>
+<pre><code language="language-javascript" class="language-javascript">const App = () =&gt; {
+  addFormListener();
+};
+
+window.onload = App;
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Completaste el codelab" duration="0">
+        <p class="image-container"><img alt="finish" src="img\\59763cefe25bfbf7.gif"></p>
+<h2 is-upgraded>Has finalizado el laboratorio 01, esperamos te haya sido de mucha ayuda.</h2>
+<h2 is-upgraded>¡Continúa practicando!⭐</h2>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+  <script src="../scripts/main.js"></script>
+
+</body>
+</html>

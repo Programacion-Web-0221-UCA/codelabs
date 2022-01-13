@@ -1,0 +1,449 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Manejo de usuarios con Promesas</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="Google Analytics ID"
+                  id="ProgramacionWeb-codelab-011121"
+                  title="Manejo de usuarios con Promesas"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="Bienvenida" duration="5">
+        <p>En este curso aprenderás acerca de las promesas, qué son y cómo se usan en JavaScript, además de cómo resolver promesas de diferentes maneras.</p>
+<h2 is-upgraded>Resultado esperado</h2>
+<p class="image-container"><img alt="result" src="img\\ed8155e16863ced.gif"></p>
+<h2 is-upgraded>¿Qué aprenderás?</h2>
+<ul>
+<li>Introducción a procesos asíncronos</li>
+<li>Promesas</li>
+<li>Manejo de promesas con <strong>then</strong>, <strong>catch</strong> y <strong>finally</strong></li>
+<li>Manejo de promesas con <strong>try-catch</strong></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Configuración del entorno" duration="10">
+        <h2 is-upgraded>IDE</h2>
+<p>El editor de texto a trabajar será Visual Studio Code, si no tienes instalado dicho editor lo puedes descargar desde el siguiente <a href="https://code.visualstudio.com/" target="_blank">enlace</a>.</p>
+<h2 is-upgraded>Clonar el repositorio base</h2>
+<p>Asumimos que tienes instalado <a href="https://git-scm.com/" target="_blank">git</a>, clona el repositorio <a href="https://github.com/Programacion-Web-0221-UCA/L02-ASYNCWORK" target="_blank">base</a> de la siguiente manera en tu lugar de preferencia:</p>
+<pre>git clone https://github.com/Programacion-Web-0221-UCA/L02-ASYNCWORK.git
+</pre>
+<p>Después de clonar el repositorio accedemos a él mediante el comando:</p>
+<pre>cd L02-ASYNCWORK
+</pre>
+<h2 is-upgraded>Archivos</h2>
+<p>En el repositorio encontrarás el archivo <strong>index.html</strong> junto a los estilos propuestos en el archivo <strong>styles.css</strong>.</p>
+<aside class="warning"><p> NOTA: Asegúrate tener instalado Live Server para poder servir la aplicación localmente. </p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Modelo de JavaScript" duration="10">
+        <h2 is-upgraded>Introducción</h2>
+<p>Es importante conocer cómo trabaja un lenguaje de programación para lograr entender su comportamiento o cómo realiza diferentes operaciones con la finalidad de prevenir errores a gran escala.</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Conocimiento de operaciones bloqueantes y no bloqueantes</li>
+<li>Conocimiento de operaciones síncronas y asíncronas</li>
+<li>Conocer cómo funcionan las peticiones de red</li>
+</ul>
+<h2 is-upgraded>Bloqueante y No Bloqueante</h2>
+<p>Los procesos bloqueantes hacen referencia a cómo se ejecuta un código en tiempo de compilación y cómo afecta esa fase de espera a nuestro programa.</p>
+<p class="image-container"><img alt="Blocking-Non" title="Blocking and non-blocking" src="img\\fecd9e2a96576b81.PNG"></p>
+<ul>
+<li><strong>Bloqueante</strong> : Una llamada u operación bloqueante no devuelve el control a nuestra aplicación hasta que se ha completado.</li>
+<li><strong>No bloqueante</strong> : Una llamada no bloqueante devuelve inmediatamente con independencia del resultado. En caso de que se haya completado, devolverá los datos solicitados.</li>
+</ul>
+<aside class="warning"><p>   BLOQUEANTE: El control no es devuelto hasta que el proceso bloqueante termine. </p>
+</aside>
+<aside class="special"><p>   NO BLOQUEANTE: La llamada es devuelta independiente del resultado, por ende es necesario controlar si nuestra petición ha sido exitosa o no. </p>
+</aside>
+<h2 is-upgraded>Sincronismo y Asincronismo</h2>
+<p>Es muy común emplear o encontrar relación con procesos síncronos y asíncronos con procesos bloqueantes y no bloqueantes, pero los procesos síncronos y asíncronos se refieren a cuando tendrá lugar una respuesta.</p>
+<p class="image-container"><img alt="Syncronus-Asyncronus" title="Asyncronus" src="img\\b9f1397c890aeb0.PNG"></p>
+<ul>
+<li><strong>Síncrono</strong> : Proceso que se ejecuta de forma secuencial.</li>
+<li><strong>Asíncrono</strong> : Proceso en el cual se obtiene la respuesta y se notifica mediante mecanismos específicos para que dicha información logre ser gestionada.</li>
+</ul>
+<aside class="warning"><p>   SÍNCRONO: Retorna cuando la ejecución termina.  </p>
+</aside>
+<aside class="special"><p>   ASÍNCRONO: La finalización de la operación es notificada al programa principal. </p>
+</aside>
+<h2 is-upgraded>Peticiones a la red</h2>
+<p>JavaScript trabaja principalmente con navegadores, por lo cual un proceso bloqueante y síncrono no ayudaría a procesar peticiones sobre la red de una manera fluida para los usuarios, por lo cual <strong>JavaScript utiliza un modelo asíncrono y no bloqueante</strong> para las interfaces entrada y salida ya que estas aseguran la ejecución de diferentes procesos de manera simultánea.</p>
+<h3 is-upgraded>¿Por qué es necesario este modelo?</h3>
+<p>Al momento de solicitar datos desde diferentes redes de comunicaciones, es importante conocer que no es un proceso directo, es decir, intervienen servicios externos que retrasan dicha comunicación</p>
+<p class="image-container"><img alt="no-direct" title="no direct response" src="img\\6de6ad2132259d31.PNG"></p>
+<h3 is-upgraded>Enviando una petición</h3>
+<p>Al permitir un modelo asíncrono y no bloqueante permite realizar peticiones a un servidor o lugar no remoto y estar seguros de obtener una respuesta en un periodo de tiempo.</p>
+<p class="image-container"><img alt="send-request" title="Send request" src="img\\2fc891e566204990.PNG"></p>
+<h3 is-upgraded>Recibiendo una respuesta</h3>
+<p>Al servidor obtener nuestra petición, la procesará y nos enviará una respuesta.</p>
+<p class="image-container"><img alt="get-response" title="Get response" src="img\\b8cda85dc422de77.PNG"></p>
+<aside class="special"><p>   NOTA: Al ser un proceso asíncrono, la respuesta que se obtiene no siempre será la solicitada </p>
+</aside>
+<p>Ahora sabemos cómo funcionan las comunicaciones con servidores y qué nos devuelven la información que solicitemos, pero <strong>¿cómo obtenemos dicha información?</strong></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Promesas" duration="0">
+        <h2 is-upgraded>Introducción</h2>
+<p>Al trabajar con un modelo <strong>bloqueante y asíncrono</strong> es importante poseer una forma de asegurar que dichas respuestas sean recibidas por nuestro programa de una forma controlada y segura. JavaScript nos provee el manejo de procesos asíncronos con la ayuda de <strong>Promesas</strong></p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Conocimiento de una Promesa</li>
+<li>Uso de promesas</li>
+<li>Introducción a fetch API</li>
+</ul>
+<h2 is-upgraded>¿Qué son?</h2>
+<p>Las promesas son valores que pueden estar disponibles ahora, en el futuro o nunca. Se puede describir a una promesa como una especie de Karma.</p>
+<aside class="special"><p>   Si tu haces algo, en consecuencia obtendras algo, ahora o en un futuro </p>
+</aside>
+<h2 is-upgraded>Estados de una promesa</h2>
+<p>Una promesa recuerda el contexto en donde se ejecutó, es decir, sabe con precisión el punto donde se ha de resolver un valor o lanzar un error. Cuando una promesa entra en ejecución pasa a tener ser resuelta con dos tipos de estados:</p>
+<ul>
+<li><strong>fulfilled</strong>: Estado que indica que la promesa se ha resuelto exitosamente.</li>
+<li><strong>rejected</strong>: Estado que indica que la promesa ha sido rechazada o que algo malo sucedió en su ejecución.</li>
+</ul>
+<aside class="warning"><p>   NOTA: Inicialmente las promesas tienen el estado <strong>pending</strong> que cambiará cuando se haya resuelto la promesa </p>
+</aside>
+<h2 is-upgraded>Sintaxis</h2>
+<pre><code language="language-javascript" class="language-javascript">const promise = new Promise(function (resolve, reject) {
+  //logic...
+});
+</code></pre>
+<aside class="special"><p><strong>resolve</strong> y <strong>reject</strong> son funciones que se ejecutaran dependiendo del resultado de la promesa </p>
+</aside>
+<h2 is-upgraded>Ejemplo de promesa</h2>
+<pre><code language="language-javascript" class="language-javascript">const promise = new Promise((resolve, reject) =&gt; {
+  setTimeout(() =&gt; {
+    resolve(&#34;Successfully promise result&#34;);
+  }, 250);
+});
+
+promise
+  .then((response) =&gt; {
+    console.log(response);
+  })
+  .catch((error) =&gt; {
+    console.log(error);
+  });
+</code></pre>
+<p>Cuando la promesa se resuelva, la respuesta pasa al <strong>.then</strong>. Acá debemos colocar la acción que se realizará cuando la promesa se resuelva exitosamente. Si la respuesta no se completa, <strong>.catch</strong> tomará dicho error e igualmente podemos realizar una acción con dicha respuesta.</p>
+<aside class="special"><p><strong>setTimeout</strong> simula un proceso asíncrono, ya que realiza la acción pasados 250 milisegundos. </p>
+</aside>
+<h2 is-upgraded>fetch API</h2>
+<h3 is-upgraded>¿Qué es?</h3>
+<p><strong>Fetch API</strong> es una interfaz simple para la búsqueda de recursos. Fetch nos facilita el trabajo para hacer solicitudes a servidores o lugares no remotos y manejar sus respuestas.</p>
+<h2 is-upgraded>Ejemplo de fetch</h2>
+<pre><code language="language-javascript" class="language-javascript">function logResult(result) {
+  console.log(result);
+}
+
+function logError(error) {
+  console.error(&#34;A problem has occurred&#34;);
+}
+
+function validateResponse(response) {
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+
+  return response;
+}
+
+function readResponseAsJSON(response) {
+  return response.json();
+}
+
+fetch(&#34;example/example.json&#34;)
+  .then(validateResponse)
+  .then(readResponseAsJSON)
+  .then(logResult)
+  .catch(logError);
+</code></pre>
+<p>Resumiendo el bloque de código:</p>
+<p><strong>Paso 1</strong>: Se llama a fetch para obtener el recurso example.json. Fetch retorna una promesa que será resuelta con un objeto. Si la respuesta pasa, entrará a <strong>validateResponse</strong>. </p>
+<p><strong>Paso 2</strong>: <strong>validateResponse</strong> verifica que el <strong>status code</strong> se encuentre entre 200-299. Si no se encuentra, se lanzará un error que se recibirá en el método <strong>catch</strong>. De lo contrario, pasará a <strong>readResponseAsJSON</strong>.</p>
+<p><strong>Paso 3</strong>: Se transforma la respuesta a objeto tipo JSON. Este método retorna una promesa que se resuelve como JSON. Una vez se resuelva, pasará al método <strong>logResult</strong> (¿qué pasara si la respuesta no se transforma a un objeto JSON?). </p>
+<p><strong>Paso 4</strong>: Se muestra en consola la respuesta ya transformada.</p>
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 1 - Funciones asíncronas" duration="0">
+        <h2 is-upgraded>Introducción</h2>
+<p>Las funciones asíncronas son aquellas que no tienen un tiempo específico de ejecución, sino que dependen de muchos factores pero nos aseguran se resolverán en un futuro</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Conocimiento de Async y Await</li>
+<li>Uso de promesas</li>
+<li>Obtención y conversión de datos</li>
+</ul>
+<h2 is-upgraded>Obtener los usuarios</h2>
+<p>De la carpeta <strong>data</strong> consultaremos el archivo <strong>human_500.json</strong> para obtener diferentes usuarios y sus características, de las cuales nos interesan</p>
+<ol type="1">
+<li>id</li>
+<li>image</li>
+<li>username</li>
+<li>email</li>
+<li>gender</li>
+<li>fullname</li>
+<li>country</li>
+</ol>
+<aside class="warning"><p>  NOTA: No siempre es necesario ocupar todos los campos brindados </p>
+</aside>
+<h2 is-upgraded>Async - Await</h2>
+<p>En las nuevas versiones de <strong>JavaScript</strong> se incluyen dos nuevas palabras reservadas, <strong>Async</strong> y <strong>await</strong>. Ambas palabras son una variante al trabajo de procesos asíncronos, tal como <strong>Promise</strong> y <strong>then</strong>. Estas surgen con el propósito de mostrar una secuencia de código más tradicional, es decir, un código secuencial sin dejar de ser código asíncrono</p>
+<h3 is-upgraded>Uso</h3>
+<pre><code language="language-javascript" class="language-javascript">const fetchData = async () =&gt; {
+  try {
+    const response = await fetch(&#34;data/data.json&#34;);
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.log(&#34;A problem has occurred&#34;);
+  }
+};
+</code></pre>
+<p>Resumiendo el bloque de código mostrado</p>
+<p><strong>Paso 1</strong>: Declaramos una función flecha con la palabra <strong>async</strong>. Lo que indicará que esta función ahora devolverá explícitamente una Promesa.</p>
+<p><strong>Paso 2</strong>: Se enuncia un <strong>try-catch</strong> para el manejo de los errores. Esta parte es importante porque <strong>async-await</strong> nos devolverá una respuesta, pero no provee un método propio para manejar errores de manera nativa.</p>
+<p><strong>Paso 3</strong>: Realizamos una llamada con fetch a <strong>data/data.json</strong> con la palabra <strong>await</strong>. Esto indica que el programa no avanzará hasta que se complete esa llamada, esta es una de las principales diferencias al usar <strong>.then</strong>. Si la respuesta es exitosa, entonces avanzará a la siguiente línea de código, de lo contrario entrará a nuestra sentencia <strong>catch</strong> con dicho error. </p>
+<p><strong>Paso 4</strong>: De igual manera, usamos <strong>await</strong> para realizar la conversión de nuestra respuesta a un objeto.</p>
+<p><strong>Paso 5</strong>: Retornamos la respuesta</p>
+
+<aside class="special"><p>   NOTA: Como se puede observar, obtenemos un código secuencial de una manera asíncrona ya que con await esperamos directamente la respuesta de un proceso asíncrono </p>
+</aside>
+<h3 is-upgraded>Comparación con then</h3>
+<pre><code language="language-javascript" class="language-javascript">const fetchData = fetch(&#34;data/data.json&#34;)
+  .then((response) =&gt; response.json())
+  .then((data) =&gt; data)
+  .catch((error) =&gt; {
+    console.log(&#34;A problem has occurred&#34;);
+  });
+</code></pre>
+<aside class="warning"><p>   NOTA: async-await se puede mezclar con then, no son excluyentes el uno del otro </p>
+</aside>
+<h2 is-upgraded>Guardando los datos</h2>
+<p>Para poder obtener los datos que se encuentran en el archivo indicado, utilizaremos <strong>async-await</strong>. Por lo cual, declaramos una función llamada <strong>fetchData</strong> , la cual recibirá la dirección del archivo donde se encuentran nuestros datos y una función <strong>fetchUsers</strong> que tendrá como objetivo obtener dichos usuarios para posteriormente renderizarlos</p>
+<pre><code language="language-javascript" class="language-javascript">const fetchData = async (url) =&gt; {
+  let data = undefined;
+
+  try {
+    const response = await fetch(url);
+
+    if (response.ok) {
+      data = await response.json();
+    } else {
+      console.warn(&#34;invalid request&#34;);
+    }
+  } catch (error) {
+    console.error({ error });
+    console.error(&#34;Error in fetch data&#34;);
+  } finally {
+    return data;
+  }
+};
+
+const fetchUsers = async () =&gt; {
+  users = (await fetchData(&#34;/data/human_1000.json&#34;)) ?? [];
+};
+</code></pre>
+<p>Pasos a destacar del bloque de código mostrado</p>
+<p><strong>Paso 1</strong>: Verificar la respuesta con <strong>response.ok</strong>, el cual será verdadero si se el <strong>status code</strong> se encuentra entre 200 y 299.</p>
+<aside class="special"><p>   NOTA: finally se ejecuta sin importar si hubo un error o no </p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 2 - Funciones de renderización" duration="0">
+        <h2 is-upgraded>Introducción</h2>
+<p>Las funciones de renderización nos ayudan a mostrar los cambios en pantalla a los usuarios.</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Renderizar un objeto</li>
+<li>Utilización de programación funcional</li>
+</ul>
+<h2 is-upgraded>Renderizar un elemento</h2>
+<p>Para mostrar el contenido de un usuario y que este tenga una semántica y una estructura que nos ayude a brindarle estilos de una manera más fácil, declararemos una función llamada <strong>renderElement</strong> la cual recibirá un usuario y devolverá una estructura <strong>HTML</strong> de la tarjeta correspondiente a ese usuario.</p>
+<pre><code language="language-javascript" class="language-javascript">const renderElement = ({
+  id,
+  image: src,
+  username,
+  email,
+  gender,
+  fullname,
+  country,
+}) =&gt;
+  ` &lt;li class=&#34;card&#34; data-id=&#34;${id}&#34;&gt;
+      &lt;div class=&#34;card-main&#34;&gt;
+          &lt;figure&gt;
+              &lt;img src=&#34;${src}&#34; alt=&#34;Avatar ${username}&#34; loading=&#34;lazy&#34;&gt;
+          &lt;/figure&gt;
+          &lt;h2 class=&#34;card-main-fullname&#34;&gt;${fullname}&lt;/h2&gt;
+          &lt;p class=&#34;card-main-email&#34;&gt;${email}&lt;/p&gt;
+          &lt;p class=&#34;card-main-username&#34;&gt;${username}&lt;/p&gt;
+          &lt;p class=&#34;card-main-gender&#34;&gt;${gender}&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&#34;card-footer&#34;&gt;
+          &lt;h3 class=&#34;card-footer-country&#34;&gt;${country}&lt;/h3&gt;
+      &lt;/div&gt;
+  &lt;/li&gt; \n`;
+</code></pre>
+<h2 is-upgraded>Programación funcional: reduce</h2>
+<p>Al necesitar renderizar n elementos y colocarlos en una misma variable, la programación funcional nos brinda el método <strong>reduce</strong>, el cual, reduce todos los elementos de un arreglo a un solo tipo de dato, en este caso, necesitamos que el tipo de dato sea un <strong>string</strong>. De este modo, declaramos una función llamada <strong>renderList</strong> que nos ayudará a renderizar los usuarios</p>
+<pre><code language="language-javascript" class="language-javascript">const renderList = () =&gt; {
+  const usersList = document.querySelector(&#34;#users-list&#34;);
+  const usersHTML = users.reduce(
+    (list, user) =&gt; list + renderElement(user),
+    &#34;&#34;
+  );
+
+  usersList.innerHTML = usersHTML;
+};
+</code></pre>
+<aside class="warning"><p> NOTA: No es necesario declarar todos los parámetros que provee el método reduce. </p>
+</aside>
+<p>Ahora que ya tenemos una función para renderizar elementos, hacemos uso de ella cuando obtenemos nuestros usuarios, es decir, en la funcion <strong>fetchData</strong>:</p>
+<pre><code language="language-javascript" class="language-javascript">const fetchUsers = async () =&gt; {
+  users = (await fetchData(&#34;/data/human_1000.json&#34;)) ?? [];
+  renderList();
+};
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 3 - Listeners" duration="10">
+        <h2 is-upgraded>Introducción</h2>
+<p>Los listeners son funciones para eventos que serán invocados cuando realicemos acciones específicas dentro de nuestra página, algunos eventos pueden ser:</p>
+<ul>
+<li><strong>submit</strong>: Evento que inicia al enviar datos desde un formulario</li>
+<li><strong>click</strong>: Evento que inicia cuando se presiona(hace click) a un elemento <strong>HTML</strong></li>
+<li><strong>hover</strong>: Evento que inicia cuando se coloca el cursor dentro de un elemento <strong>HTML</strong></li>
+</ul>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Uso de eventos click.</li>
+<li>Uso de <strong>setTimeout</strong> para simular procesos asíncronos.</li>
+</ul>
+<h2 is-upgraded>Simular una llamada asíncrona</h2>
+<p>Simularemos una llamada asíncrona utilizando la función <strong>setTimeout</strong>, la cual ejecuta una función pasado un tiempo indicado. Entonces, declaramos una función <strong>timeout</strong> que recibe un tiempo de resolución de una promesa, obteniendo:</p>
+<pre><code language="language-javascript" class="language-javascript">const timeout = (time) =&gt; {
+  return new Promise((resolve) =&gt; setTimeout(resolve, time));
+};
+</code></pre>
+<aside class="special"><p>  NOTA: Nuestra función timeout simula el proceso que tiene que recorrer nuestra petición desde nuestra computadora a un servidor remoto </p>
+</aside>
+<p>Con esto funcionando, declaramos la funcion <strong>checkUsers</strong>, que se encarga de actualizar nuestro usuario pasado un tiempo</p>
+<pre><code language="language-javascript" class="language-javascript">const checkUsers = () =&gt; {
+  const checkPromises = users.map(async (user) =&gt; {
+    const seconds = Math.floor(Math.random() * 60);
+    await timeout(seconds * 1000);
+
+    const card = document.querySelector(`[data-id=&#34;${user.id}&#34;]`);
+    const footer = card.querySelector(&#34;.card-footer&#34;);
+
+    footer.classList.add(&#34;checked&#34;);
+  });
+
+  Promise.all(checkPromises);
+};
+</code></pre>
+<p>Procesos a destacar del bloque de código mostrado</p>
+<p><strong>Paso 1</strong>: Se obtiene un número aleatorio entre 0 y 60 con <strong>Math.floor</strong>.</p>
+<p><strong>Paso 2</strong>: Se simula mediante <strong>timeout</strong> un espacio de tiempo con el valor calculado anteriormente.</p>
+<p><strong>Paso 3</strong>: Como se ha mencionado, al declarar una función con <strong>async</strong> logramos que esa función retorne una promesa, por consecuente, la variable <strong>checkPromises</strong> será un array de <strong>Promesas</strong> que se deberá resolver mediante procesos asíncronos </p>
+<p><strong>Paso 4</strong>: Como <strong>checkPromises</strong> es un array de promesas, no tenemos el control de realizar un <strong>await</strong> o un <strong>.then</strong> una cantidad finita de veces ya que es necesario resolver cada una de las promesas que este contiene. <strong>Promise</strong> nos brinda un método especial para este tipo de ocasiones. <strong>Promise.all</strong> recibe un array de promesas que posteriormente, tomará cada promesa para resolverla o rechazarla, devolviendo de igual manera un array que contendrá los resultados.</p>
+
+<aside class="warning"><p>   NOTA: Promise.all resuelve las promesas en el orden que llegan, es decir, el resultado de la primera posición corresponde a la promesa que estaba en la primera posición </p>
+</aside>
+<aside class="special"><p>   NOTA: Promise.all devuelve los resultados únicamente si todos los elementos se resolvieron de manera exitosa, de lo contrario, no devolverá ningun resultado. ¿Qué pasa si algunos campos del array fueran opcionales y fallaran? Leer acerca de Promise.allSetled y su diferencia con Promise.all </p>
+</aside>
+<h2 is-upgraded>Evento de verificar a los usuarios</h2>
+<p>Declaramos una función <strong>setupListeners</strong> que se encarga principalmente de manejar los eventos de nuestra aplicación. En dicha función es necesario declarar el evento click a nuestro botón de verificar</p>
+<pre><code language="language-javascript" class="language-javascript">const setupListeners = () =&gt; {
+  const button = document.querySelector(&#34;#check-button&#34;);
+  button.addEventListener(&#34;click&#34;, () =&gt; {
+    checkUsers()
+  });
+</code></pre>
+<h2 is-upgraded>Iniciar nuestra App</h2>
+<p>Para iniciar nuestra app, se propone la siguiente estructura en código:</p>
+<pre><code language="language-javascript" class="language-javascript">const App = () =&gt; {
+  fetchUsers();
+  setupListeners();
+};
+
+window.onload = App;
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Do it yourself" duration="20">
+        <h2 is-upgraded>Actividad evaluada del Codelab</h2>
+<p>A partir del código obtenido como resultado de la realización de este codelab, realizar las siguientes dos funcionalidades, tomando en cuenta:</p>
+<ul>
+<li>Responsabilidad única de funciones y atributos.</li>
+<li>Reutilización de código.</li>
+<li>Uso de elementos ES6+ (Destructuración, spreading, arrow functions, etc).</li>
+<li>Uso de Promesas (con async y await).</li>
+</ul>
+<h2 is-upgraded>Parte 1: Marcado por países 🌎</h2>
+<p>Añadir una entrada de texto al lado del botón verificar, el cual servirá para ingresar un país cualquiera (Solo el texto). Con el texto obtenido, al dar click en el botón se deben de rellenar de distinto color los contenedores del pais que coincidan con la entrada de texto. Nota: debe de ser un color distinto al original (crimson), y siempre se deben de marcar los elementos restantes con el estilo original.</p>
+<h2 is-upgraded>Parte 2: Eliminado aleatorio ❌</h2>
+<p>Imitando la funcionalidad de verificar, se debe añadir un botón de eliminar todos (junto al de verificar), el cual debe de utilizar la lógica de temporizador aleatorio (utilizando en el otro botón), para ir eliminado las tarjetas del árbol DOM.</p>
+<h2 is-upgraded>Notas para este ejercicio:</h2>
+<ol type="1">
+<li>Se debe de reestructurar la función checkUsers para realizar cualquier funcionalidad con la lógica de temporizador aleatorio, garantizando la responsabilidad única y la reutilización de código.</li>
+<li>No tomar en cuenta el problema de concurrencia en la eliminación de elementos de la lista. Primero eliminar gráficamente y luego vaciar el arreglo.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Completaste el codelab" duration="0">
+        <p class="image-container"><img alt="finish" src="img\\59763cefe25bfbf7.gif"></p>
+<h2 is-upgraded>Has finalizado el laboratorio 02, esperamos te haya sido de mucha ayuda.</h2>
+<h2 is-upgraded>¡Continúa practicando!⭐</h2>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+  <script src="../scripts/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1164 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Mi Pokedex nacional</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="Google Analytics ID"
+                  id="ProgramacionWeb-codelab-111021"
+                  title="Mi Pokedex nacional"
+                  environment="web"
+                  feedback-link="">
+    
+      <google-codelab-step label="¡Bienvenidos/as!" duration="5">
+        <p>En este curso aprenderás el concepto de una API (Aplication Programming Interface) y cómo procesar los servicios que estas nos proveen. También aprenderás cómo usar diferentes hooks que provee React para manejar de manera dinámica las renderizaciones que se hacen sobre los diferentes servicios. Esta codelab lo guiará a través de una aplicación de la implementación de una <a href="https://www.pokemon.com/es/pokedex/" target="_blank">pokedex</a> utilizando el framework de React, por lo que se tendrá una idea clara de como consumir una <strong>API</strong> y configurarla según nuestras necesidades.</p>
+<h2 is-upgraded>Lo que estaremos realizando</h2>
+<p>Nuestro objetivo es realizar una pokedex nacional con la ayuda de <a href="https://pokeapi.co/" target="_blank">pokeAPI</a></p>
+<ul>
+<li>Comenzaremos creando cada uno de los servicios que necesitaremos para renderizar nuestros <strong>pokemons</strong>.</li>
+<li>Crearemos los componenentes para mostrar los datos que solicitamos de nuestra <strong>API</strong> de prueba.</li>
+</ul>
+<p class="image-container"><img alt="Pokedex con PokeApi" title="pokedex con api" src="img\\536efaed024db1bf.gif"></p>
+<h2 is-upgraded>¿Qué aprenderás?</h2>
+<p>✅ Concepto de una <strong>API</strong>.</p>
+<p>✅ Consumo de servicios de una <strong>API</strong>.</p>
+<p>✅ Uso de <strong>React hooks</strong>.</p>
+<p>✅ Estilos con tailwind.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Configuración del entorno" duration="10">
+        <h2 is-upgraded>IDE</h2>
+<p>El editor de texto a trabajar será Visual Studio Code, si no tienes instalado dicho editor lo puedes descargar desde el siguiente <a href="https://code.visualstudio.com/" target="_blank">enlace</a>.</p>
+<h2 is-upgraded>Clonar el repositorio base</h2>
+<p>Asumimos que tienes instalado <a href="https://git-scm.com/" target="_blank">git</a>, clona el repositorio <a href="https://github.com/Programacion-Web-0221-UCA/L03-POKEAPI" target="_blank">base</a> de la siguiente manera en tu lugar de preferencia:</p>
+<pre>git clone https://github.com/Programacion-Web-0221-UCA/L03-POKEAPI.git
+</pre>
+<p>Después de clonar el repositorio accedemos a él mediante el comando:</p>
+<pre>cd L03-POKEAPI
+</pre>
+<h2 is-upgraded>Archivos</h2>
+<p>En el repositorio encontrarás la siguiente estructura propuesta.</p>
+<pre>my-app
+├── README.md
+├── node_modules
+├── package.json
+├── .gitignore
+├── tailwind.config.js
+├── craco.config.js
+├── public
+├── ├── favicon.ico
+├── ├── index.html
+├── └── manifest.json
+└── src
+    ├── App.css
+    ├── App.js
+    ├── App.test.js
+    ├── index.css
+    ├── index.js
+    ├── logo.svg
+    ├── serviceWorker.js
+    ├── Constants
+    ├── ├── Pokemon.js
+    ├── Assets
+    ├── ├── Img
+    ├── ├── ├── pokemon.png
+    └── setupTests.js
+</pre>
+<p>Archivos a destacar sobre la estructura</p>
+<p><strong>Constants</strong> Carpeta donde se alojan aquellos archivos que nunca cambiarán o tienen valores por defecto.</p>
+<p><strong>Assets</strong> Carpeta donde se alojan todo tipo de recursos visuales como imágenes, gif, etc.</p>
+<h2 is-upgraded>Instalación de dependencias</h2>
+<p>Al ser un proyecto con <strong>React</strong>, es necesario instalar todas las dependencias necesarias para que nuestro programa compile. Para ello, realizar</p>
+<pre>npm i
+</pre>
+<aside class="warning"><p>  NOTA: npm i es una manera abreviada de npm install </p>
+</aside>
+<h2 is-upgraded>Iniciar nuestra aplicación</h2>
+<p>Para iniciar nuestra aplicación ejecutaremos el siguiente comando en la terminal</p>
+<pre>npm start
+</pre>
+<aside class="warning"><p>  NOTA: npm start provee un hot reload, lo que implica que podemos ejecutar cambios en nuestra aplicación mientras se encuentra en ejecución y visualizar dichos cambios. </p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="¿Qué es una API?" duration="0">
+        <h2 is-upgraded>Introducción</h2>
+<p>Una API, por sus siglas Aplication Programming Interface es un conjunto de definiciones y protocolos que utiliza para desarrollar e integrar el software de las aplicaciones.</p>
+<p>Las API nos permiten comunicar nuestros servicios y productos con diferentes usuarios. Esto provee una reducción de tiempo y dinero al momento de desarrollar una aplicación con diferentes entornos.</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Conocimiento de una API.</li>
+<li>Conocimiento de peticiones en API.</li>
+<li>Conocimineto de estructura REST.</li>
+<li>Introduccion a PokeAPI.</li>
+</ul>
+<p class="image-container"><img alt="API" title="API structure" src="img\\433e5478a414caf0.png"></p>
+<aside class="warning"><p> A veces las API se consideran como contratos con documentación que representa un acuerdo entre las partes. </p>
+</aside>
+<aside class="warning"><p> NOTA: La estructura que determina como responderá el software es la estructura enviada por la solicitud remota. </p>
+</aside>
+<h2 is-upgraded>Ventajas de ocupar una API</h2>
+<p>Además de funcionar con un intermediario entre nuestros productos y usuarios finales, las <strong>API</strong> nos proveen ventajas sobre otras estructuras</p>
+<p>✅ Otorgan flexibilidad.</p>
+<p>✅ Simplifican el diseño y la administración.</p>
+<p>✅ Su arquitectura proporciona oportunidades de innovación.</p>
+<h2 is-upgraded>Verbos en las API</h2>
+<p>Las API incluyen diferentes verbos para realizar todas las solicitudes remotas que necesitemos ya que una API no deja de ser una arquitectura para consultar o realizar acciones en productos o servicios, entre ellos se encuentran</p>
+<ul>
+<li><strong>GET</strong>: Verbo utilizado para consultar un recurso. Una de las características principales de este verbo es la libertad de interacturar con acciones directas de un servidor, es decir, no causa efectos secundarios sobre este. Un ejemplo de un metodo GET puede ser <strong>https:mydomain.com/users</strong>, el cual está solicitando que se entregue el recurso conocido como <strong>users</strong>.</li>
+<li><strong>POST</strong>: Las peticiones de tipo POST son comúnmente destinadas a la creación de nuevos recursos dentro de nuestro servidor. Un ejemplo de método POST sería <strong>https://mydomain.com/users</strong>, él necesitará a diferencia del metodo GET un cuerpo o datos extra para poder completarse.</li>
+<li><strong>PUT/PATCH</strong>: Estos dos verbos son similares ya que ambos estan destinados a actualizar recursos ya existentes. Su diferente es que PUT reemplaza todo el recurso mientras que PATCH reemplaza aquellos datos que se deseen actualizar dejando los demas como estaban anteriormente.</li>
+</ul>
+<aside class="warning"><p> NOTA: No importa cuantas veces realicemos una petición GET, los resultados siempre serán los mismos. </p>
+</aside>
+<aside class="warning"><p> NOTA: Los únicos métodos de peticiones que deberían poseer un cuerpo o datos extras son las peticiones de tipo POST y PUT/PATCH </p>
+</aside>
+<aside class="warning"><p> IMPORTANTE: Los métodos GET pueden recibir un cuerpo si se expresa en su misma url, por ejemplo https://mydomain.com/users?token=jwJGSA7N, el valor de token se conoce con un dato especial de los tipos GET conocido como parámetro. </p>
+</aside>
+<h2 is-upgraded>Arquitectura de una API: REST</h2>
+<p>REST por sus siglas <strong>Representational State Transfer</strong> nos proporciona un alto nivel de flexibilidad y una libertad para los desarrolladores. Un diseño REST nos provee diferentes requisitos para lograr una implementación adecuada y con todas sus ventajas, entre la que destaca</p>
+<p><strong>Interfaz única</strong>: Todas las solicitudes de API para un mismo recurso deben de ser iguales, independientemente del tipo de petición que se realice. Por ejemplo, podríamos tener nuestro recurso en <strong>https://mydomain.com/users</strong>, una arquitectura REST nos indica que esta url actuara como una <strong>url base</strong> para manejar los recursos de los usuarios.</p>
+<ul>
+<li>Si se realiza un método GET: Traerá nuestros usuarios.</li>
+<li>Si se realiza un método POST: Creará un nuevo usuario.</li>
+<li>Si se realiza un método PUT: Actualizará un usuario.</li>
+</ul>
+<p><strong>https://mydomain.com/users</strong> actúa como nuestra url base para el recurso de <strong>users</strong>, pero a ella podemos agregarle más cosas dependiendo de nuestras necesidades, por ejemplo el traer a un único usuario, podríamos agregarle a nuestra url base un id, quedando de esta manera <strong>https://mydomain.com/users/id</strong></p>
+<aside class="warning"><p> NOTA: Este es uno de los principios mas importantes en una arquitectura REST ya que además de poseer una forma simple de comunicarse, provee una forma segura de presentar y solicitar datos. </p>
+</aside>
+<h2 is-upgraded>PokeAPI</h2>
+<p>A continuación, se presenta la API con la cual se estará trabajando en las posteriores secciones. La PokeAPI es una API con los datos del emblemático juego <a href="http://pokemon.nintendo.es/esES/" target="_blank">Pokemon</a></p>
+<h3 is-upgraded>¿Cómo funciona la PokeAPI?</h3>
+<p>La <strong>pokeAPI</strong> nos provee de diferentes recursos para consultar todos los datos que existen, esos recursos son los siguientes</p>
+<p>✅ Obtener todos los pokemons en base a filtros, por defecto nos devuelve 20 pokemons</p>
+<p>✅ Obtener un pokemon por nombre o numero de pokedex</p>
+<p>✅ Obtener pokemons en base a tipos</p>
+<p>✅ Obtener pokemons en base a habilidades</p>
+<p>Los endpoints que provee la pokeAPI para realizar las acciones previamente mencionadas son los siguientes</p>
+<ul>
+<li><a href="https://pokeapi.co/api/v2/pokemon" target="_blank">https://pokeapi.co/api/v2/pokemon</a> : Traer pokemons (Con un parametro filter podemos obtener una cantidad deseada de pokemons)</li>
+<li><a href="https://pokeapi.co/api/v2/pokemon/bulbasaur" target="_blank">https://pokeapi.co/api/v2/pokemon/name</a>: Traer un pokemon específico (colocar el nombre del pokemon en lugar de name, por ejemplo, bulbasaur)</li>
+<li><a href="https://pokeapi.co/api/v2/type/3" target="_blank">https://pokeapi.co/api/v2/type/type</a>: Traer los tipos de pokemon que existen (colocar un número en lugar del ultimo type, por ejemplo, 1)</li>
+<li><a href="https://pokeapi.co/api/v2/ability/4" target="_blank">https://pokeapi.co/api/v2/ability/ability</a>: Traer las habilidades de pokemon que existen (colocar un número en lugar del ultimo ability, por ejemplo, 1)</li>
+</ul>
+<h3 is-upgraded>Ejemplo para obtener todos los pokemons</h3>
+<p>Para obtener los pokemons haremos uso del siguiente <strong>endpoint</strong></p>
+<pre>https://pokeapi.co/api/v2/pokemon?limit=20&amp;offset=5
+</pre>
+<aside class="special"><p> NOTA: limit indica la cantidad de pokemons que necesitamos y el offset indica cuantos pokemons queremos saltarnos, en este caso solicitamos 20 pokemons y que se salte 5 pokemons. </p>
+</aside>
+<p>Al realizar dicha petición, obtendremos como resultado un <strong>JSON</strong> con la siguiente infomación</p>
+<pre><code language="language-javascript" class="language-javascript">{
+   &#34;count&#34;: 1118,
+   &#34;next&#34;: &#34;https://pokeapi.co/api/v2/pokemon?offset=15&amp;limit=10&#34;,
+   &#34;previous&#34;: &#34;https://pokeapi.co/api/v2/pokemon?offset=0&amp;limit=5&#34;,
+   &#34;results&#34;: [
+    {
+      &#34;name&#34;: &#34;charizard&#34;,
+      &#34;url&#34;: &#34;https://pokeapi.co/api/v2/pokemon/6/&#34;
+    },
+    {
+      &#34;name&#34;: &#34;squirtle&#34;,
+      &#34;url&#34;: &#34;https://pokeapi.co/api/v2/pokemon/7/&#34;
+    },
+    {
+      &#34;name&#34;: &#34;wartortle&#34;,
+      &#34;url&#34;: &#34;https://pokeapi.co/api/v2/pokemon/8/&#34;
+    },
+    {
+      &#34;name&#34;: &#34;blastoise&#34;,
+      &#34;url&#34;: &#34;https://pokeapi.co/api/v2/pokemon/9/&#34;
+    },
+    {
+      &#34;name&#34;: &#34;caterpie&#34;,
+      &#34;url&#34;: &#34;https://pokeapi.co/api/v2/pokemon/10/&#34;
+    }
+    ]
+}
+</code></pre>
+<h3 is-upgraded>Ejemplo para traer un pokemon en base al nombre</h3>
+<p>Para obtener los pokemons haremos uso del siguiente <strong>endpoint</strong></p>
+<pre>https://pokeapi.co/api/v2/pokemon/bulbasaur
+</pre>
+<p>Al realizar dicha petición, obtendremos como resultado un <strong>JSON</strong> con la siguiente infomación</p>
+<pre><code language="language-javascript" class="language-javascript">{
+  &#34;abilities&#34;: [],
+  &#34;base_experience&#34;: 64,
+  &#34;forms&#34;: [],
+  &#34;game_indices&#34;: [],
+  &#34;height&#34;: 7,
+  &#34;held_items&#34;: [],
+  &#34;id&#34;: 1,
+  &#34;is_default&#34;: true,
+  &#34;location_area_encounters&#34;: &#34;https://pokeapi.co/api/v2/pokemon/1/encounters&#34;,
+  &#34;moves&#34;: [],
+  &#34;name&#34;: &#34;bulbasaur&#34;,
+  &#34;order&#34;: 1,
+  &#34;past_types&#34;: [],
+  &#34;species&#34;: {
+  &#34;name&#34;: &#34;bulbasaur&#34;,
+  &#34;url&#34;: &#34;https://pokeapi.co/api/v2/pokemon-species/1/&#34;
+  },
+  &#34;sprites&#34;: {},
+  &#34;stats&#34;: [],
+  &#34;types&#34;: [],
+  &#34;weight&#34;: 69
+}
+</code></pre>
+<aside class="special"><p> NOTA: Se muestran pocos resultados a efectos simular los resultados. </p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Integración de Tailwind" duration="10">
+        <p>Para darle estilo a los elementos se utilizará el framework <strong>Tailwind</strong>.</p>
+<p>Si nunca lo has utilizado o no lo recuerdas bien, puedes visitar el <a href="https://carolinamcc15.github.io/tailwind-guide/#0" target="_blank">codelab sobre Tailwind</a> con el objetivo de que comprendas su funcionamiento, cómo utilizarlo y cómo instalarlo, para futuras ocasiones.</p>
+<h2 is-upgraded>Aclaraciones importantes</h2>
+<ul>
+<li>En el caso de React, para aplicar los estilos a un elemento, se deben colocar en el atributo <code>className</code>:</li>
+</ul>
+<pre><code language="language-javascript" class="language-javascript">&lt;h3 className=&#34;font-roboto text-sm mt-3&#34;&gt;Ejemplo&lt;/h3&gt;
+</code></pre>
+<ul>
+<li>Para poder acceder a las clases de Tailwind es necesario colocar el siguiente fragmento de código en <code>index.css</code>:</li>
+</ul>
+<pre><code language="language-css" class="language-css">@tailwind base;
+@tailwind components;
+@tailwind utilities;
+</code></pre>
+<ul>
+<li>Recuerda que el archivo <code>tailwind.config.js</code> se utiliza para personalizar valores y estilos. En este caso se han añadido la fuente &#34;Roboto&#34; y &#34;Oswald&#34;, así como también una variante para minHeight.</li>
+</ul>
+<pre><code language="language-javascript" class="language-javascript">module.exports = {
+  purge: [&#34;./src/**/*.{js,jsx,ts,tsx}&#34;, &#34;./public/index.html&#34;],
+  darkMode: false, // or &#39;media&#39; or &#39;class&#39;
+  theme: {
+    fontFamily: {
+      roboto: [&#34;Roboto&#34;, &#34;sans-serif&#34;],
+      oswald: [&#34;Oswald&#34;, &#34;san-serif&#34;],
+    },
+    minHeight: {
+      fullscreen: &#34;100vh&#34;,
+    },
+  },
+  variants: {
+    extend: {},
+  },
+  plugins: [],
+};
+</code></pre>
+<aside class="warning"><p>  NOTA: Asegúrate de comprender Tailwind antes de continuar a las siguientes secciones, ya que se utilizará para dar estilo a la mayoría de elementos. </p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 1 - Creación de servicios" duration="5">
+        <h2 is-upgraded>Introducción</h2>
+<p>Los servicios son los encargados de administrar todas las solicitudes de API, se les conoce como un puente o adaptador entre el servidor donde se encuentra alojada la API y la capa de visualización (páginas y componentes) de nuestra aplicación.</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Cómo crear los servicios.</li>
+</ul>
+<h2 is-upgraded>Creando los servicios</h2>
+<p>Crearemos una carpeta en src a la cual colocaremos el nombre de <strong>Services</strong>, aquí es donde se colocarán los archivos js encargados de gestionar todas las peticiones a la API, y como nuestra aplicacion se trata unicamente de Pokemons, creamos una subcarpeta llamada <strong>Pokemon</strong>.</p>
+<p>Luego creamos 2 archivos js:</p>
+<ul>
+<li>Pokemon.services.js</li>
+<li>Helpers</li>
+</ul>
+<h2 is-upgraded>Helpers.js</h2>
+<p>Como su nombre lo indica, este archivo nos ayudara a definir funciones de ayuda con el fin de reutilizarlas. Para esto haremos lo siguiente:</p>
+<p>1° Exportamos la URL base de la API</p>
+<pre><code language="language-javascript" class="language-javascript">export const BASE_URL = &#34;https://pokeapi.co/api/v2/&#34;;
+</code></pre>
+<p>2° Creamos la función para traernos todos los pokemons. Esta función recibe un objeto como parámetro al cual se le aplican dos propiedades: <strong>limit</strong> para limitar el numero de pokemons a obtener y <strong>offset</strong> para &#34;movernos&#34; en la lista de pokemon y no siempre obtener los mismos. La función retornará un arreglo de objetos con el nombre del pokemon y la URL para consultar.</p>
+<pre><code language="language-javascript" class="language-javascript">export const fetchAllPokemons = async ({ limit, offset }) =&gt; {
+  const response = await fetch(
+    `${BASE_URL}pokemon?limit=${limit}&amp;offset=${offset}`
+  );
+  const pokemonResponse = await response.json();
+
+  const pokemonsUrl = pokemonResponse.results.map((pokemon) =&gt; pokemon?.url);
+
+  return pokemonsUrl;
+};
+</code></pre>
+<p>3° Creamos una función que recorrera el arreglo de URL, hará el fetch a cada una de ellas y nos retornará las promesas resueltas con la información de cada pokemon.</p>
+<pre><code language="language-javascript" class="language-javascript">export const fetchUrlPokemons = async (urlPokemons) =&gt; {
+  const fetchedPokemons = urlPokemons.map((url) =&gt; fetch(url));
+  const pokemons = await Promise.all(fetchedPokemons);
+
+  return Promise.all(pokemons.map((pokemon) =&gt; pokemon.json()));
+};
+</code></pre>
+<p>4° Por último, creamos la función para transformar la data de los pokemon, para utilizar únicamente las propiedades que necesitamos.</p>
+<pre><code language="language-javascript" class="language-javascript">export const transformPokemonData = (pokemonRaw) =&gt; {
+  if (!pokemonRaw) return null;
+
+  return {
+    name: pokemonRaw.name,
+    abilities: pokemonRaw.abilities.map((ability) =&gt; ability.ability.name),
+    types: pokemonRaw.types.map((type) =&gt; type.type.name),
+    id: pokemonRaw.id,
+    thumbnail: pokemonRaw.sprites.front_default,
+  };
+};
+</code></pre>
+<h2 is-upgraded>Pokemon.services.js</h2>
+<p>Aqui colocaremos la lógica de peticionar los pokemons a la API, para ello realizamos lo siguiente:</p>
+<ul>
+<li>Importamos de helpers las funciones que creamos anteriormente.</li>
+</ul>
+<pre><code language="language-javascript" class="language-javascript">import {
+  BASE_URL,
+  fetchAllPokemons,
+  fetchUrlPokemons,
+  transformPokemonData,
+} from &#34;./helper&#34;;
+</code></pre>
+<ul>
+<li>Definimos un objeto llamado pokemonServices el cual debemos exportar</li>
+</ul>
+<pre><code language="language-javascript" class="language-javascript">export const pokemonServices = {};
+</code></pre>
+<p>Luego como propiedades tendrá las siguientes funciones:</p>
+<p><strong>Get Pokemons</strong>: Traemos una lista de pokemons basandose en los filtros pasados por parametro</p>
+<pre><code language="language-javascript" class="language-javascript">getPokemons: async (filters = {}) =&gt; {
+    const { limit = 20, offset = 0} = filters
+    try {
+      const urlPokemons = await fetchAllPokemons({ limit, offset });
+      const pokemons = await fetchUrlPokemons(urlPokemons);
+
+      const mappedPokemons = pokemons.map(transformPokemonData);
+
+      return { success: true, pokemons: mappedPokemons };
+
+    } catch (error) {
+      console.error({ error });
+      return { success: false, pokemons: [] };
+    }
+},
+</code></pre>
+<p><strong>Get Pokemon</strong>: Traerá un pokemon en especifico, el cual indicaremos vía parametro el nombre.</p>
+<pre><code language="language-javascript" class="language-javascript">getPokemon: async (name = &#34;&#34;) =&gt; {
+  try {
+    const response = await fetch(`${BASE_URL}pokemon/${name}`);
+    const data = await response.json();
+    if (!data) throw new Error(&#34;Pokemon not found&#34;);
+
+    const transformedPokemon = transformPokemonData(data);
+
+    return { success: true, pokemon: transformedPokemon };
+  } catch (error) {
+    console.error({ error });
+
+    return { success: false, pokemon: null };
+  }
+};
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 2 - Crear componente Card" duration="5">
+        <h2 is-upgraded>Introducción</h2>
+<p>Ya una vez obtenidos los datos de los pokemons, hay que mostrarlos en nuestra vista. Para ello y que sea de una manera atractiva, lo haremos haciendo uso de las &#34;Cards&#34;, con las que mostraremos los datos como el nombre del Pokemon, sus habilidades, imagen, etc.</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Crear un componente de React</li>
+</ul>
+<h2 is-upgraded>Creación del componente</h2>
+<p>Para mantener una buena estructura de proyecto, React nos recomienda crear todos nuestros componentes bajo la carpeta <strong>Components</strong>, y por cada componente crear subcarpetas, la cual en nuestro caso sería con el nombre de <strong>Card</strong></p>
+<p>Dentro de esta subcarpeta, añadiremos lo siguiente:</p>
+<ul>
+<li>Archivo de componente Card, llamado <strong>Card.jsx</strong></li>
+<li>Subcarpeta <strong>Group</strong>, donde colocamos componentes que se relacionan con la Card.</li>
+<li>Dentro de Group, creamos una carpeta para el componente <strong>Chip</strong> y una archivo para el componente de Group, llamado <strong>Group.jsx</strong></li>
+<li>Dentro de carpeta Chip igualmente creamos su archivo de componente: <strong>Chip.jsx</strong></li>
+</ul>
+<h2 is-upgraded>Card.jsx</h2>
+<p>Básicamente este archivo contendrá el layout del componente, como las props que recibira cuando hagamos uso de él:</p>
+<pre><code language="language-javascript" class="language-javascript">import Group from &#34;./Group/Group&#34;;
+
+import pokebola from &#34;../../Assets/Img/pokemon.png&#34;;
+import { IoAdd } from &#34;react-icons/all&#34;;
+
+const Card = ({ pokemon, onAdd = () =&gt; {} }) =&gt; {
+  const src = pokemon?.thumbnail ?? pokebola;
+
+  return (
+    &lt;div className=&#34;w-72 h-96 bg-white rounded shadow-lg relative&#34;&gt;
+      &lt;div
+        className=&#34;absolute top-1 right-1 p-1 text-white bg-indigo-700 rounded cursor-pointer transform hover:scale-110 transition-all duration-75 ease-in-out&#34;
+        onClick={() =&gt; {
+          onAdd();
+        }}
+      &gt;
+        &lt;IoAdd className=&#34;w-5 h-5&#34; /&gt;
+      &lt;/div&gt;
+      &lt;div
+        className=&#34;w-72 h-40 rounded-t flex justify-center items-center&#34;
+        style=&#123;&#123; backgroundColor: &#34;#F6F6F6&#34; }}
+      &gt;
+        &lt;img src={src} className=&#34;w-32 h-32&#34; alt={`pokemon ${pokemon.name}`} /&gt;
+      &lt;/div&gt;
+      &lt;div className=&#34;px-4&#34;&gt;
+        &lt;div className=&#34;flex justify-between items-center py-1.5&#34;&gt;
+          &lt;h2
+            className=&#34;font-roboto text-xl capitalize&#34;
+            style=&#123;&#123; color: &#34;#454545&#34; }}
+          &gt;
+            {pokemon.name}
+          &lt;/h2&gt;
+          &lt;p className=&#34;font-roboto text-xl&#34; style=&#123;&#123; color: &#34;#6D6D6D&#34; }}&gt;
+            Nº {pokemon.id}
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;Group title=&#34;Types&#34; items={pokemon.types} /&gt;
+        &lt;Group title=&#34;Abilities&#34; items={pokemon.abilities} /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default Card;
+</code></pre>
+<aside class="special"><p>  NOTA: props esperadas son <strong>Pokemon (object)</strong> y la función para hacer uso del onClick </p>
+</aside>
+<p>Ya tenemos definido con los estilos nuestro componente de Card, ahora seguiremos con los archivos dentro de Group.</p>
+<h2 is-upgraded>Group.jsx</h2>
+<p>Este componente definé información del pokemon, como sus habilidades y los tipos. Se compone de lo siguiente:</p>
+<pre><code language="language-javascript" class="language-javascript">import Chip from &#34;./Chip/Chip&#34;;
+import { typeColors } from &#34;../../../Constants/Pokemon&#34;;
+
+const Group = ({ title = &#34;&#34;, items = [] }) =&gt; {
+  return (
+    &lt;&gt;
+      &lt;h3 className=&#34;font-roboto text-sm mt-3&#34;&gt;{title}&lt;/h3&gt;
+      &lt;div className=&#34;flex justify-start gap-4 py-2 items-center&#34;&gt;
+        {items.map((item) =&gt; (
+          &lt;Chip key={item} item={item} color={typeColors[item]} /&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/&gt;
+  );
+};
+
+export default Group;
+</code></pre>
+<p>Recibiendo como props el <strong>title</strong> de esta sección y los items (Array) a mostrarse, el cual iteramos con la función <strong>.map</strong> y le damos diseño con el componente Chip que veremos a continuación:</p>
+<h2 is-upgraded>Chip.jsx</h2>
+<p>Dentro de la carpeta Chip modificaremos el archivo correspondiente al componente Chip. Este archivo no contendrá más que una definición del layout con sus respectivos estilos:</p>
+<pre><code language="language-javascript" class="language-javascript">const Chip = ({ item, color = &#34;#bfbfbf&#34; }) =&gt; {
+  return (
+    &lt;p
+      className=&#34;px-2 py-1 bg-gray-300 rounded font-roboto&#34;
+      style=&#123;&#123;
+        color: &#34;#fff&#34;,
+        backgroundColor: color,
+        fontVariantCaps: &#34;small-caps&#34;,
+      }}
+    &gt;
+      {item}
+    &lt;/p&gt;
+  );
+};
+
+export default Chip;
+</code></pre>
+<p>Recibe como props el item (String) y un color, que en este caso es el color del tipo del Pokemon.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 3 - Integración de servicios con componentes" duration="15">
+        <h2 is-upgraded>Introducción</h2>
+<p>Una vez se tengan listos los servicios, utilizaremos los datos obtenidos de la PokeAPI para mostrarlos en el componente <code>Card.jsx</code> que acabamos de crear.</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Utilizar los datos de cada pokemon para ser mostrados.</li>
+<li>Creación del componete <code>Pokedex</code> para renderizar todas las cards.</li>
+</ul>
+<h2 is-upgraded>Accediendo a valores</h2>
+<p>Para poder utilizar los valores de cada pokemon, tenemos que recibir un objeto <code>pokemon</code> como una propiedad del componente <code>Card.jsx</code>:</p>
+<pre><code language="language-javascript" class="language-javascript">const Card = ({ pokemon }) =&gt; {};
+</code></pre>
+<p>Ahora ya podremos acceder a los valores y colocarlos en la parte respectiva de la card, de la siguiente manera:</p>
+<pre><code language="language-javascript" class="language-javascript">const Card = ({ pokemon }) =&gt; {
+  const src = pokemon?.thumbnail ?? pokebola;
+
+  return (
+    &lt;div className=&#34;w-72 h-96 bg-white rounded shadow-lg relative&#34;&gt;
+      &lt;div className=&#34;absolute top-1 right-1 p-1 text-white bg-indigo-700 rounded cursor-pointer transform hover:scale-110 transition-all duration-75 ease-in-out&#34;&gt;
+        &lt;IoAdd className=&#34;w-5 h-5&#34; /&gt;
+      &lt;/div&gt;
+      &lt;div
+        className=&#34;w-72 h-40 rounded-t flex justify-center items-center&#34;
+        style=&#123;&#123; backgroundColor: &#34;#F6F6F6&#34; }}
+      &gt;
+        &lt;img src={src} className=&#34;w-32 h-32&#34; alt={`pokemon ${pokemon.name}`} /&gt;
+      &lt;/div&gt;
+      &lt;div className=&#34;px-4&#34;&gt;
+        &lt;div className=&#34;flex justify-between items-center py-1.5&#34;&gt;
+          &lt;h2
+            className=&#34;font-roboto text-xl capitalize&#34;
+            style=&#123;&#123; color: &#34;#454545&#34; }}
+          &gt;
+            {pokemon.name}
+          &lt;/h2&gt;
+          &lt;p className=&#34;font-roboto text-xl&#34; style=&#123;&#123; color: &#34;#6D6D6D&#34; }}&gt;
+            Nº {pokemon.id}
+          &lt;/p&gt;
+        &lt;/div&gt;
+        &lt;Group title=&#34;Types&#34; items={pokemon.types} /&gt;
+        &lt;Group title=&#34;Abilities&#34; items={pokemon.abilities} /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+</code></pre>
+<aside class="special"><p>  NOTA: la validación para la variable src indica que si el pokemon no posee una imagen, se colocará una por defecto (en este caso una pokebola). </p>
+</aside>
+<h2 is-upgraded>Componente Pokedex</h2>
+<p>Ya con el componente <code>Card</code> completo y listo para renderizar los datos, debemos crear un nuevo componente que nos permita crear las cards para cada uno de los pokemons en el arreglo obtenido de la PokeAPI.</p>
+<p>Para esto crearemos una carpeta llamada <code>Pokedex</code> y a u vez, dentro de ella añadiremos un componente con el nombre <code>Pokedex.jsx</code>. Este contendrá lo siguiente:</p>
+<pre><code language="language-javascript" class="language-javascript">import Card from &#34;../Card/Card&#34;;
+
+const Pokedex = ({ pokemons = [] }) =&gt; {
+  return (
+    &lt;div className=&#34; w-full flex justify-center items-center gap-4 flex-wrap&#34;&gt;
+      {pokemons.map((pokemon) =&gt; {
+        return &lt;Card key={pokemon.id} pokemon={pokemon} /&gt;;
+      })}
+    &lt;/div&gt;
+  );
+};
+
+export default Pokedex;
+</code></pre>
+<aside class="special"><p>     NOTA: La función map() está siendo utilizada para retornar un componente Card por cada uno de los pokemons </p>
+</aside>
+<aside class="special"><p>     NOTA: Es necesario incluir el atributo key porque se trata de una lista de elementos. Este debe ser único, ya que sirve para identificar cada uno de ellos.  </p>
+</aside>
+<h2 is-upgraded>Último paso</h2>
+<p>Ahora solamente necesitamos importar el componente <code>Pokedex.jsx</code> a nuestro archivo principal: <code>App.js</code></p>
+<pre><code language="language-javascript" class="language-javascript">import Pokedex from &#34;./Components/Pokedex/Pokedex&#34;;
+</code></pre>
+<p>Y finalmente, en el <code>return</code> colocaremos nuestro componente <code>Pokedex</code> y le enviaremos el arreglo de pokemons obtenido gracias a los servicios:</p>
+<pre><code>return (
+    &lt;div className=&#34;w-full min-h-fullscreen flex flex-col bg-gray-200&#34;&gt;
+      &lt;header className=&#34;w-full h-16 bg-gray-300 sticky top-0 left-0 flex justify-center items-center text-black font-oswald z-10&#34;&gt; National Pokedex &lt;/header&gt;
+
+      &lt;main className=&#34;p-8 flex flex-col justify-center gap-8&#34;&gt;
+        &lt;Pokedex pokemons={pokemons} /&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+);
+</code></pre>
+<p>✨ ¡Ahora ya puedes visualizar los pokemons obtenidos en cada card!</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 4 - Crear componente Party" duration="10">
+        <h2 is-upgraded>Introducción</h2>
+<p>Con el fin de hacer una aplicación más compleja vamos a hacer una lista de pokemons al la cual le llamaremos <strong>party</strong> para simular que estos pokemons son de nuestro equipo de combate.</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Crear componente PartyPokemon</li>
+<li>Crear componente Party</li>
+</ul>
+<h2 is-upgraded>Componente Party</h2>
+<p>El componente &#34;Party&#34; es el que nos ayudará a manejar la lista de pokemons.</p>
+<p class="image-container"><img alt="Party" src="img\\6cb4dbcfc644c81d.png"></p>
+<h3 is-upgraded>PartyPokemon.jsx</h3>
+<p>Crearemos una carpeta en la carpeta &#34;Components&#34; la cual se llamará &#34;Party&#34; que contendra otra carpeta &#34;PartyPokemon&#34; con un archivo &#34;PartyPokemon.jsx&#34; o &#34;PartyPokemon.js&#34;.</p>
+<p>Consecutivo a la creación se importara un icono de react-icons, una imágen de una pokebola y se creara un <a href="https://es.reactjs.org/docs/components-and-props.html" target="_blank">componente</a>, el cual recibira el pokemon y la función onDelete.</p>
+<pre><code language="language-javascript" class="language-javascript">import React from &#34;react&#34;;
+
+import pokebola from &#34;../../../Assets/Img/pokemon.png&#34;;
+
+import { AiFillDelete as TrashIcon } from &#34;react-icons/all&#34;;
+
+const PartyPokemon = ({ pokemon = {}, onDelete = () =&gt; {} }) =&gt; {};
+
+export default PartyPokemon;
+</code></pre>
+<p>y se retorna el siguiente html:</p>
+<pre><code language="language-javascript" class="language-javascript">return (
+  &lt;div className=&#34;relative&#34;&gt;
+    {pokemon.id &amp;&amp; (
+      &lt;div
+        onClick={() =&gt; {
+          onDelete();
+        }}
+        className=&#34;absolute top-0 right-0 cursor-pointer&#34;
+      &gt;
+        &lt;TrashIcon className=&#34;w-6 h-6 text-red-700&#34; /&gt;
+      &lt;/div&gt;
+    )}
+
+    &lt;div className=&#34;w-24 h-24 p-1 rounded-full bg-gray-300 select-none&#34;&gt;
+      &lt;img
+        className=&#34;w-full h-full object-cover&#34;
+        src={pokemon.thumbnail ?? pokebola}
+        alt=&#34;Pokebola&#34;
+      /&gt;
+    &lt;/div&gt;
+
+    &lt;p className=&#34;text-center mt-2 font-roboto capitalize&#34;&gt;
+      {&#34; &#34;}
+      {pokemon.name ?? &#34;Empty&#34;}{&#34; &#34;}
+    &lt;/p&gt;
+  &lt;/div&gt;
+);
+</code></pre>
+<p>En el que se comprueba primero si el objeto que se mando tiene un id porque en caso contrario no se debería de poder eliminar y no debería de aparecer el icono.</p>
+<p>De segundo se comprueba si el pokemon tiene una imágen porque en caso contrario se debería de mostrar la imágen de la pokebola representando que se encuentra vacío.</p>
+<p>Y por tercero y último se comprueba si el pokemon tiene nombre porque en caso contrario se debería de mostrar vacío en vez de el nombre de un pokemon.</p>
+<p>Para que al final quede de la siguiente manera:</p>
+<pre><code language="language-javascript" class="language-javascript">import React from &#34;react&#34;;
+
+import pokebola from &#34;../../../Assets/Img/pokemon.png&#34;;
+
+import { AiFillDelete as TrashIcon } from &#34;react-icons/all&#34;;
+
+const PartyPokemon = ({ pokemon = {}, onDelete = () =&gt; {} }) =&gt; {
+  return (
+    &lt;div className=&#34;relative&#34;&gt;
+      {pokemon.id &amp;&amp; (
+        &lt;div
+          onClick={() =&gt; {
+            onDelete();
+          }}
+          className=&#34;absolute top-0 right-0 cursor-pointer&#34;
+        &gt;
+          &lt;TrashIcon className=&#34;w-6 h-6 text-red-700&#34; /&gt;
+        &lt;/div&gt;
+      )}
+
+      &lt;div className=&#34;w-24 h-24 p-1 rounded-full bg-gray-300 select-none&#34;&gt;
+        &lt;img
+          className=&#34;w-full h-full object-cover&#34;
+          src={pokemon.thumbnail ?? pokebola}
+          alt=&#34;Pokebola&#34;
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;p className=&#34;text-center mt-2 font-roboto capitalize&#34;&gt;
+        {&#34; &#34;}
+        {pokemon.name ?? &#34;Empty&#34;}{&#34; &#34;}
+      &lt;/p&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default PartyPokemon;
+</code></pre>
+<h3 is-upgraded>Party.jsx</h3>
+<p>Crearemos un archivo en la carpeta &#34;Party&#34; que contendra un archivo &#34;Party.jsx&#34; o &#34;Party.js&#34;.</p>
+<p>Posterior a la creación del archivo importaremos PartyPokemon y crearemos un <a href="https://es.reactjs.org/docs/components-and-props.html" target="_blank">componente</a>, el cual recibira un arreglo donde se encuentran los pokemons que están en la party y una función para eliminar.</p>
+<p>Esta función la exportaremos para poder utilizarlo en otro archivo externo.</p>
+<pre><code language="language-javascript" class="language-javascript">import PartyPokemon from &#34;./PartyPokemon/PartyPokemon&#34;;
+
+const Party = ({ party = [], onDeleteInParty = () =&gt; {} }) =&gt; {};
+
+export default Party;
+</code></pre>
+<p>En esta se crea un arreglo que contendrá los espacios (6) de la &#34;party&#34; con valores vacíos.</p>
+<pre><code language="language-javascript" class="language-javascript">const partyToRender = Array(6).fill({});
+</code></pre>
+<aside class="special"><p> NOTA: Recordar que <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/fill" target="_blank">fill</a> cambia todos los elementos en un arreglo por un valor estático en este caso vacío. </p>
+</aside>
+<p>Después se procede a llenar el arreglo que se creo recorriendo la lista de pokemons que se envía con un <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach" target="_blank">forEach</a> y si se encuentra entre los primeros 6 se añadiría al nuevo arreglo el contenido del objeto con la <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Operators/Spread_syntax" target="_blank">sintáxis Spread</a>.</p>
+<pre><code language="language-javascript" class="language-javascript">party.forEach((poke, i) =&gt; {
+  if (i &lt;= 5) partyToRender[i] = { ...poke };
+});
+</code></pre>
+<p>Para al final retornar un html con el <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/map" target="_blank">mapeo</a> de la función que renderiza a los pokemons uno por uno, mandandole el pokemon, la función onDelete con el id del pokemon en la party y asignandole una <a href="https://reactjs.org/docs/lists-and-keys.html" target="_blank">key</a> en react que será el id del pokemon en la party.</p>
+<p>En caso de que se encuentre un objeto vacío se envía &#34;null&#34; al pokemon, &#34;null&#34; a la función de onDeleteParty y se crea un nuevo id con la posición ya que el pokemonId no existe y se tiene que asignar una <a href="https://reactjs.org/docs/lists-and-keys.html" target="_blank">key</a> distinta de &#34;null&#34; en react.</p>
+<pre><code language="language-javascript" class="language-javascript">return (
+  &lt;div className=&#34;w-full flex flex-wrap gap-8 justify-center&#34;&gt;
+    {partyToRender.map((pokemon, i) =&gt; {
+      return (
+        &lt;PartyPokemon
+          pokemon={pokemon}
+          onDelete={() =&gt; {
+            onDeleteInParty(pokemon.partyId);
+          }}
+          key={pokemon.partyId ?? `Empty_${i}`}
+        /&gt;
+      );
+    })}
+  &lt;/div&gt;
+);
+</code></pre>
+<p>Para que al final quede de la siguiente manera:</p>
+<pre><code language="language-javascript" class="language-javascript">import React from &#34;react&#34;;
+
+import PartyPokemon from &#34;./PartyPokemon/PartyPokemon&#34;;
+
+const Party = ({ party = [], onDeleteInParty = () =&gt; {} }) =&gt; {
+  const partyToRender = Array(6).fill({});
+
+  party.forEach((poke, i) =&gt; {
+    if (i &lt;= 5) partyToRender[i] = { ...poke };
+  });
+
+  return (
+    &lt;div className=&#34;w-full flex flex-wrap gap-8 justify-center&#34;&gt;
+      {partyToRender.map((pokemon, i) =&gt; {
+        return (
+          &lt;PartyPokemon
+            pokemon={pokemon}
+            onDelete={() =&gt; {
+              onDeleteInParty(pokemon.partyId);
+            }}
+            key={pokemon.partyId ?? `Empty_${i}`}
+          /&gt;
+        );
+      })}
+    &lt;/div&gt;
+  );
+};
+
+export default Party;
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 5 - Crear componente Search" duration="5">
+        <h2 is-upgraded>Introducción</h2>
+<p>Para agregar y ver la información de un pokemon en la aplicación web de manera sencilla nosotros tendremos que ser capaces de buscarlos por su nombre o por su número para lo cual utilizaremos un componente al cual le llamaremos <strong>Search</strong>.</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Crear componente &#34;Search&#34;</li>
+</ul>
+<h2 is-upgraded>Componente Search</h2>
+<p>El componente &#34;Search&#34; es el que nos ayudará a buscar al pokemon por nombre o por número.</p>
+<p class="image-container"><img alt="Search" src="img\\a107cf76650dae4.png"></p>
+<p>Crearemos una carpeta en la carpeta &#34;Components&#34; la cual se llamará &#34;Search&#34; que contendra un archivo &#34;Search.jsx&#34; o &#34;Search.js&#34;.</p>
+<p>Posterior a la creación del archivo crearemos un <a href="https://www.google.com" target="_blank">componente</a>, el cual recibira una función para cuando se le de click a buscar y lo exportaremos para poder utilizarlo en otro archivo externo.</p>
+<pre><code language="language-javascript" class="language-javascript">const Search = ({ onSubmit }) =&gt; {};
+
+export default Search;
+</code></pre>
+<p>En este componente nosotros retornaremos un formulario con una entrada de texto y un botón de la siguiente manera:</p>
+<pre><code language="language-javascript" class="language-javascript">&lt;form className=&#34;flex justify-center&#34;&gt;
+  &lt;input
+    type=&#34;text&#34;
+    placeholder=&#34;Search for a pokemon&#34;
+    name=&#34;search&#34;
+    className=&#34;rounded-l py-1 px-2 font-roboto text-base focus:outline-none focus:border-transparent&#34;
+    autoComplete=&#34;on&#34;
+    style=&#123;&#123; color: &#34;6D6D6D&#34; }}
+  /&gt;
+  &lt;button
+    type=&#34;submit&#34;
+    className=&#34;rounded-r px-2&#34;
+    style=&#123;&#123; backgroundColor: &#34;#fff&#34;, color: &#34;6D6D6D&#34; }}
+  &gt;
+    Search
+  &lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+<aside class="special"><p>     NOTA: Recordando que todas las clases vienen de la documentación de <a href="https://tailwindcss.com/docs" target="_blank">Tailwind CSS</a> y que se utiliza style solo para propiedades muy específicas como lo pueden ser el color y el backgroundColor. </p>
+</aside>
+<p>Recalcando que tiene el atributo autoComplete para que se autocomplete y que en algunas clases se ponen dos puntos ya que solo se quiere que tome esas propiedades en ciertos estados como por ejemplo el de &#34;focus&#34;.</p>
+<p>Aparte de esto nosotros tenemos que ser capaces de guardar el valor de la entrada de texto para utilizarlo, para lo cual utilizaremos <a href="https://es.reactjs.org/docs/hooks-overview.html" target="_blank">hooks</a> en específico el <a href="https://es.reactjs.org/docs/hooks-state.html" target="_blank">hook de estado</a> que nos permite preservar algunos valores.</p>
+<p>Para lo cual tenemos que importarlo.</p>
+<pre><code language="language-javascript" class="language-javascript">import { useState } from &#34;react&#34;;
+</code></pre>
+<p>y después declararlo en la función.</p>
+<pre><code language="language-javascript" class="language-javascript">const [name, setName] = useState(&#34;&#34;);
+</code></pre>
+<p>Esto nos permite crear dos funciones en un <a href="https://es.reactjs.org/docs/forms.html" target="_blank">formulario de react</a>.</p>
+<pre><code language="language-javascript" class="language-javascript">const onSubmitHandler = (e) =&gt; {
+  e.preventDefault();
+  onSubmit(name);
+};
+
+const handleOnChange = (e, save) =&gt; {
+  save(e.target.value);
+};
+</code></pre>
+<p>La primera para manejar cuando se envíe el formulario y la segunda para manejar cuando se cambie la entrada y guardar el nuevo estado.</p>
+<p>En la primera se recibe el evento &#34;onSubmit&#34;, se cancela el evento y se deja el espacio para poder llamar a la función necesaria y colocarle el name.</p>
+<p>En la segunda se recibe el evento &#34;onChange&#34; y la función para cambiar el estado (como callback) para después guardar el valor que trae el evento al que se esta apuntando en el &#34;onChange&#34;.</p>
+<p>Llamándolas de la siguiente manera:</p>
+<pre><code language="language-javascript" class="language-javascript">&lt;form onSubmit={onSubmitHandler} className=&#34;flex justify-center&#34;&gt;
+  &lt;input
+    type=&#34;text&#34;
+    placeholder=&#34;Search for a pokemon&#34;
+    name=&#34;search&#34;
+    className=&#34;rounded-l py-1 px-2 font-roboto text-base focus:outline-none focus:border-transparent&#34;
+    autoComplete=&#34;on&#34;
+    style=&#123;&#123; color: &#34;6D6D6D&#34; }}
+    onChange={(e) =&gt; {
+      handleOnChange(e, setName);
+    }}
+  /&gt;
+
+  &lt;button
+    type=&#34;submit&#34;
+    className=&#34;rounded-r px-2&#34;
+    style=&#123;&#123; backgroundColor: &#34;#fff&#34;, color: &#34;6D6D6D&#34; }}
+  &gt;
+    Search
+  &lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+<p>para que al final el archivo quede de la siguiente manera:</p>
+<pre><code language="language-javascript" class="language-javascript">import { useState } from &#34;react&#34;;
+
+const Search = ({ onSubmit }) =&gt; {
+  const [name, setName] = useState(&#34;&#34;);
+
+  const onSubmitHandler = (e) =&gt; {
+    e.preventDefault();
+    onSubmit(name);
+  };
+
+  const handleOnChange = (e, save) =&gt; {
+    save(e.target.value);
+  };
+
+  return (
+    &lt;form onSubmit={onSubmitHandler} className=&#34;flex justify-center&#34;&gt;
+      &lt;input
+        type=&#34;text&#34;
+        placeholder=&#34;Search for a pokemon&#34;
+        name=&#34;search&#34;
+        className=&#34;rounded-l py-1 px-2 font-roboto text-base focus:outline-none focus:border-transparent&#34;
+        autoComplete=&#34;on&#34;
+        style=&#123;&#123; color: &#34;6D6D6D&#34; }}
+        onChange={(e) =&gt; {
+          handleOnChange(e, setName);
+        }}
+      /&gt;
+
+      &lt;button
+        type=&#34;submit&#34;
+        className=&#34;rounded-r px-2&#34;
+        style=&#123;&#123; backgroundColor: &#34;#fff&#34;, color: &#34;6D6D6D&#34; }}
+      &gt;
+        Search
+      &lt;/button&gt;
+    &lt;/form&gt;
+  );
+};
+
+export default Search;
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parte 6 - Funcionalidades principales" duration="15">
+        <h2 is-upgraded>Introducción</h2>
+<p>Ya tenemos todo preparado para renderizar cada uno de los componentes de la pokedex y nuestro equipo de pokemons, solo falta crear dichas funcionalidades en nuestro componente padre, en este caso, <strong>App.js</strong>.</p>
+<h2 is-upgraded>Objetivos</h2>
+<ul>
+<li>Consumir nuestros servicios</li>
+<li>Uso de useEffect y funciones asincronas</li>
+<li>Persistencia de los datos brindados por nuestros servicios</li>
+</ul>
+<h2 is-upgraded>useEffect</h2>
+<p>Hasta el momento únicamente hemos utilizado el <strong>useState</strong> que nos ayuda a guardar y renderizar aquellos elementos que se añaden a nuestro <strong>DOM virtual</strong> en React, pero ¿Por qué es necesario un <a href="https://es.reactjs.org/docs/hooks-effect.html" target="_blank">useEffect</a>?</p>
+<p>Supongamos que necesitamos guardar nuestros pokemons que vienen de nuestros servicios, podrías intentar realizar lo siguiente</p>
+<pre><code language="language-javascript" class="language-javascript">function App(){
+  // variables
+  const [pokemons, setPokemons] = useState([]);
+
+  fetch(pokemonServices.getPokemons())
+  .then(res =&gt; res.json())
+  .then(json =&gt; setPokemons(json.pokemons))
+
+  return &lt;div&gt;{...}&lt;/div&gt;
+
+}
+
+export default App;
+</code></pre>
+<p>Trataremos de explicar el problema de el código mostrado</p>
+<p><strong>Paso 1</strong>: Renderizamos el componente App</p>
+<p><strong>Paso 2</strong>: Creamos un estado para los pokemons</p>
+<p><strong>Paso 3</strong>: Realizamos el fetch a nuestro servicio</p>
+<p><strong>Paso 4</strong>: Renderizamos el jsx de nuestro componente</p>
+<p><strong>Paso 5</strong>: Al obtener los pokemons, actualizamos el estado de pokemons</p>
+<p><strong>Paso 6</strong>: Al actualizar el estado, se re-renderiza el componente App</p>
+<p><strong>Paso 7</strong>: Creamos de nuevo un estado para los pokemons</p>
+<p><strong>Paso 8</strong>: Realizamos nuevamente el fetch a nuestro servicio</p>
+<p><strong>Paso 9</strong>: Renderizamos nuevamente el jsx de nuestro componente</p>
+<p><strong>Paso 10</strong>: Al obtener los pokemons, actualizamos el estado de pokemons</p>
+<p><strong>Paso 11</strong>: Al actualizar el estado, se re-renderiza el componente App</p>
+<p><strong>Paso 12</strong>: Creamos de nuevo un estado para los pokemons</p>
+<p><strong>Paso 13</strong>: Realizamos nuevamente el fetch a nuestro servicio</p>
+<p><strong>Paso 14</strong>: Renderizamos nuevamente el jsx de nuestro componente</p>
+<p><strong>Paso 15</strong>: Al obtener los pokemons, actualizamos el estado de pokemons</p>
+<p><strong>Paso 16</strong>: Al actualizar el estado, se re-renderiza el componente App</p>
+<p><strong>¡¡ Tenemos un problema !!</strong> Estamos generando un loop infinito. En este caso, <strong>React</strong> nos provee del hook <strong>useEffect</strong> para controlar de mejor manera cuando se quiere renderizar algo en especifico</p>
+<h3 is-upgraded>Usando useEffect</h3>
+<p><strong>useEffect</strong> recibe una función y una lista de dependencias por las cuales nuestro efecto se estará renderizando, si no se colocan dependencias, el efecto solo se ejecutará una vez</p>
+<pre><code language="language-javascript" class="language-javascript">useEffect(() =&gt; {
+  const fetchPokemons = async () =&gt; {
+    try {
+      const filters = { limit: 20, offset: 0 };
+      const response = await pokemonServices.getPokemons(filters);
+
+      if (!response[&#34;success&#34;]) {
+        throw new Error(&#34;Something was wrong&#34;);
+      }
+
+      setPokemons(response[&#34;pokemons&#34;]);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  fetchPokemons();
+}, []);
+</code></pre>
+<p>Explicando el <strong>useEffect</strong> mostrado</p>
+<p><strong>Paso 1</strong>: Declaramos el useEffect con un array vacío, ese array es la lista de nuestras dependencias, al estar vacío, significa que no tenemos dependencias y por lo tanto, solo se ejecuta una sola vez.</p>
+<p><strong>Paso 2</strong>: Declaramos una función fetchPokemons la cual se encargara de guardar nuestros pokemons en nuestro estado (Ahora si, no crearemos un loop infinito).</p>
+<p><strong>Paso 3</strong> En la función fetchPokemons utilizamos el servicio de traer todos los pokemons, dicha respuesta nos retorna un objeto con un atributo <strong>success</strong> y un atributo <strong>pokemons</strong>.</p>
+<p><strong>Paso 4</strong> Verificamos si la respuesta no ha sido exitosa con el atributo <strong>success</strong> y si no es exitosa, devolvemos un error. Caso contrario guardaremos nuestros pokemons.</p>
+<p><strong>Paso 5</strong>: llamamos a la función fetchPokemons().</p>
+<aside class="special"><p> NOTA: useEffect recibe una función normal, si deseamos ocupar una función asíncrona con async-await, debemos declarar una función internamente y ejecutarla. </p>
+</aside>
+<pre><code language="language-javascript" class="language-javascript">const [pokemons, setPokemons] = useState([]);
+const [searchedPokemon, setSearchedPokemon] = useState(null);
+const [party, setParty] = useState([]);
+</code></pre>
+<p>Explicando el bloque de codigo mostrado</p>
+<p><strong>Paso 1</strong>: Declaramos los estados necesarios para nuestra aplicacion</p>
+<pre><code language="language-javascript" class="language-javascript">const onAddToPartyHandler = (id) =&gt; {
+  const pokemon = id
+    ? pokemons.find((poke) =&gt; poke.id === id)
+    : searchedPokemon;
+
+  if (pokemon &amp;&amp; party.length &lt; 6) {
+    setParty([
+      ...party,
+      {
+        ...pokemon,
+        partyId: `${pokemon.name}_${pokemon.id}_${new Date().getTime() / 1000}`,
+      },
+    ]);
+  }
+};
+</code></pre>
+<p>Explicando el bloque de código mostrado</p>
+<p><strong>Paso 1</strong>: Si se envía el id del pokemon ocuparemos el método find que proveen los Arrays para encontrar dicho pokemon por su id, en caso contrario, significa que ese pokemon es un pokemon buscado.</p>
+<p><strong>Paso 2</strong>: Verificamos que tengamos un pokemon y que nuestro equipo sea menor a 6 (Ya que es el máximo de pokemons que podemos tener en nuestro equipo)</p>
+<p><strong>Paso 3</strong>: Si se cumple dicha condiciones, guardaremos nuestro nuevo pokemon a nuestro equipo pero le asignaremos una nueva clave unica (Ya que podemos tener pokemons repetidos y es necesario diferenciarlos)</p>
+<pre><code language="language-javascript" class="language-javascript">const onDeleteInPartyHandler = (partyId) =&gt; {
+  const newParty = party.filter((poke) =&gt; poke.partyId !== partyId);
+  setParty(newParty);
+};
+</code></pre>
+<p>Explicando el bloque de código mostrado</p>
+<p><strong>Paso 1</strong>: Se ocupa el método filter que proveen los Array, el cual filtra cada elemento del array en base a una condición, si la condición es verdadera, nuestro elemento se mantiene, en caso contrario, el elemento se descarta.</p>
+<p><strong>Paso 2</strong>: Guardamos nuestro nuevo equipo de pokemons.</p>
+<pre><code language="language-javascript" class="language-javascript">const onSearchHandler = async (name) =&gt; {
+  try {
+    const response = await pokemonServices.getPokemon(name);
+    if (!response[&#34;success&#34;]) {
+      throw new Error(&#34;Cannot find the pokemon&#34;);
+    }
+
+    setSearchedPokemon(response[&#34;pokemon&#34;]);
+  } catch (error) {
+    console.error({ error });
+  }
+};
+</code></pre>
+<p>Explicando el bloque de código mostrado</p>
+<p><strong>Paso 1</strong>: Al trabajar con un proceso asíncrono, declaramos un try-catch para manejar los errores de una manera más controlada.</p>
+<p><strong>Paso 2</strong>: Ocupamos nuestro método <strong>getPokemon</strong> de nuestro servicio de pokemons para buscar nuestro pokemon, lo cual nos retornará un objeto con un atributo <strong>success</strong> y un atributo <strong>pokemon</strong>.</p>
+<p><strong>Paso 3</strong>: Verificamos que nuestra petición no sido exitosa con el atributo <strong>success</strong>, en dado caso no sea exitosa, retornamos un error.</p>
+<p><strong>Paso 4</strong>: Guardamos nuestro pokemons en nuestro estado de <strong>searchedPokemon</strong>.</p>
+<p>Al final App debe de quedar de la siguiente forma:</p>
+<pre><code language="language-javascript" class="language-javascript">import { useState, useEffect } from &#34;react&#34;;
+
+import &#34;./App.css&#34;;
+
+import Pokedex from &#34;./Components/Pokedex/Pokedex&#34;;
+import Party from &#34;./Components/Party/Party&#34;;
+import Search from &#34;./Components/Search/Search&#34;;
+import Card from &#34;./Components/Card/Card&#34;;
+
+import { pokemonServices } from &#34;./Services/Pokemon/Pokemon.services&#34;;
+
+function App() {
+  const [pokemons, setPokemons] = useState([]);
+  const [searchedPokemon, setSearchedPokemon] = useState(null);
+  const [party, setParty] = useState([]);
+
+  useEffect(() =&gt; {
+    const fetchPokemons = async () =&gt; {
+      try {
+        const filters = { limit: 20, offset: 0 };
+        const response = await pokemonServices.getPokemons(filters);
+
+        if (!response[&#34;success&#34;]) {
+          throw new Error(&#34;Something was wrong&#34;);
+        }
+
+        setPokemons(response[&#34;pokemons&#34;]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchPokemons();
+  }, []);
+
+  const onAddToPartyHandler = (id) =&gt; {
+    const pokemon = id
+      ? pokemons.find((poke) =&gt; poke.id === id)
+      : searchedPokemon;
+
+    if (pokemon &amp;&amp; party.length &lt; 6) {
+      setParty([
+        ...party,
+        {
+          ...pokemon,
+          partyId: `${pokemon.name}_${pokemon.id}_${
+            new Date().getTime() / 1000
+          }`,
+        },
+      ]);
+    }
+  };
+
+  const onDeleteInPartyHandler = (partyId) =&gt; {
+    const newParty = party.filter((poke) =&gt; poke.partyId !== partyId);
+    setParty(newParty);
+  };
+
+  const onSearchHandler = async (name) =&gt; {
+    try {
+      const response = await pokemonServices.getPokemon(name);
+      if (!response[&#34;success&#34;]) {
+        throw new Error(&#34;Cannot find the pokemon&#34;);
+      }
+
+      setSearchedPokemon(response[&#34;pokemon&#34;]);
+    } catch (error) {
+      console.error({ error });
+    }
+  };
+  return (
+    &lt;div className=&#34;w-full min-h-fullscreen flex flex-col bg-gray-200&#34;&gt;
+      &lt;header className=&#34;w-full h-16 bg-gray-300 sticky top-0 left-0 flex justify-center items-center text-black font-oswald z-10&#34;&gt;
+        {&#34; &#34;}
+        National Pokedex{&#34; &#34;}
+      &lt;/header&gt;
+
+      &lt;main className=&#34;p-8 flex flex-col justify-center gap-8&#34;&gt;
+        &lt;Party party={party} onDeleteInParty={onDeleteInPartyHandler} /&gt;
+
+        &lt;Search onSubmit={onSearchHandler} /&gt;
+        {searchedPokemon &amp;&amp; (
+          &lt;div className=&#34;self-center&#34;&gt;
+            {&#34; &#34;}
+            &lt;Card
+              pokemon={searchedPokemon}
+              onAdd={() =&gt; {
+                onAddToPartyHandler();
+              }}
+            /&gt;{&#34; &#34;}
+          &lt;/div&gt;
+        )}
+
+        &lt;Pokedex pokemons={pokemons} onAddToParty={onAddToPartyHandler} /&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Do It Yourself" duration="0">
+        <h2 is-upgraded>Actividad evaluada del Codelab</h2>
+<p>A partir del código obtenido como resultado de la realización del codelab, realizar la siguiente funcionalidad considerando lo siguiente:</p>
+<ul>
+<li>Responsabilidad única de funciones y atributos.</li>
+<li>Reutilización de código.</li>
+<li>Uso de elementos ES6+ (Destructuración, spreading, arrow functions, etc).</li>
+<li>Uso de Promesas (con async y await).</li>
+</ul>
+<aside class="warning"><p> NOTA: Recomendamos seguir el codelab para entender su funcionamiento pero en la rama <a href="https://github.com/Programacion-Web-0221-UCA/L03-POKEAPI/tree/solution/src" target="_blank">solution</a> se encuentra todo el código fuente. </p>
+</aside>
+<h2 is-upgraded>Paginación en la pokedex</h2>
+<p>Actualmente tenemos una función que nos devuelve una cierta cantidad de pokemons en nuestro servicio de <strong>getPokemons</strong> con los parámetros <strong>limit</strong> y <strong>offset</strong>, pero no siempre queremos ver esos pokemons, entonces nuestro trabajo será crear una paginación para visualizar mas pokemons. Para ello haremos uso de mínimo dos botones que nos ayuden a crear nuestra paginación.</p>
+<h3 is-upgraded>Bóton siguiente</h3>
+<p>Crear un bóton siguiente que se encargue de mostrarnos los siguientes n pokemons.</p>
+<h3 is-upgraded>Bóton anterior</h3>
+<p>Crear un bóton anterior que nos permita mostrar los anteriores n pokemons.</p>
+<aside class="warning"><p>  NOTA: n es nuestro limit, por defecto es 20 pero podremos cambiarlo </p>
+</aside>
+<aside class="warning"><p>  RECORDANDO: limit es el número de pokemons que solicitamos y offset es el número de pokemons que queremos ignorar, por ejemplo si nuestro limit es diez y nuestro offset es dos, estamos diciendo que nos traiga diez pokemons pero que comience a contar desde el tercero (que ignore los primeros dos). </p>
+</aside>
+<h2 is-upgraded>Notas para el ejercicio</h2>
+<ul>
+<li>Utilizar componentes.</li>
+<li>Reutilización de componentes creados (Si el problema lo permite).</li>
+<li>Validar los campos necesarios.</li>
+</ul>
+<h2 is-upgraded>Ejemplo de resultado esperado</h2>
+<p class="image-container"><img alt="result" src="img\\e0eeb4f7c2215d03.gif"></p>
+<aside class="warning"><p> NOTA: Se muestran pocos pokemons para mostrar de mejor manera el resultado. </p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Completaste el codelab" duration="0">
+        <p class="image-container"><img alt="finish" src="img\\59763cefe25bfbf7.gif"></p>
+<h2 is-upgraded>Has finalizado el laboratorio 03, esperamos te haya sido de mucha ayuda.</h2>
+<h2 is-upgraded>¡Continúa practicando!⭐</h2>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>

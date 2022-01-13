@@ -1,0 +1,27 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2021-10-18T00:32:41-06:00",
+  "id": "ProgramacionWeb-codelab-171021",
+  "duration": 60,
+  "title": "Control de mis finanzas",
+  "summary": "Ejercicio js principiantes",
+  "source": "codelab-lab01.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown"
+  ],
+  "tags": [
+    "iguide",
+    "web",
+    "workshop"
+  ],
+  "ga": "Google Analytics ID",
+  "url": "ProgramacionWeb-codelab-171021"
+}

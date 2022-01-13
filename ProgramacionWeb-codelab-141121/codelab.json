@@ -1,0 +1,27 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2021-11-17T13:40:27-06:00",
+  "id": "ProgramacionWeb-codelab-141121",
+  "duration": 60,
+  "title": "Autenticación",
+  "summary": "Laboratorio 04 estados globales y rutas",
+  "source": "codelab-lab04.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "codelab",
+    "markdown"
+  ],
+  "tags": [
+    "iguide",
+    "web",
+    "workshop"
+  ],
+  "ga": "Google Analytics ID",
+  "url": "ProgramacionWeb-codelab-141121"
+}
